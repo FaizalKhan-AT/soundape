@@ -1,0 +1,66 @@
+.sidebar {
+  width: 240px;
+  background: var(--black-color);
+  overflow: hidden;
+  transition: 0.3s ease-in-out;
+  height: 100vh;
+  /* position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 20; */
+}
+.sidebar.active {
+  width: 70px;
+}
+.side-text.active {
+  display: none;
+}
+.menu-container {
+  list-style: none;
+}
+.menu-item {
+  width: 100%;
+  padding: 15px 10px;
+  border-radius: 15px;
+  transition: all 0.2s ease-in-out;
+}
+.menu-profile {
+  border-radius: 50%;
+}
+.menu-item:hover,
+.menu-item:active {
+  background: var(--bg-color);
+}
+.menu-icon {
+  font-weight: 300;
+  font-size: 30px;
+}
+.app-name {
+  letter-spacing: 2px;
+  font-size: 20px;
+}
+.font-outlined {
+  /* -webkit-text-stroke: 0.3px var(---text-color);
+  color: transparent; */
+  font-size: 20px;
+}
+.suggested-card {
+  border-color: transparent !important;
+  background-color: transparent !important;
+  height: fit-content;
+  margin: 3rem 0;
+}
+.displayname {
+  font-size: 15px;
+  font-weight: bold;
+}
+.username {
+  font-size: 15px;
+  color: var(--secondary-text-color);
+}
+.divider {
+  margin: 0 5px;
+  width: 100%;
+  border: 0.5px dashed var(--secondary-text-color);
+}

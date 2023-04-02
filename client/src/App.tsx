@@ -1,10 +1,13 @@
 import { FC } from "react"
-
+import { Routes,Route } from "react-router-dom"
+import Home from "./Pages/Home"
 
 const App:FC = () => {
 
   return (
-    <h1>Heloo soundape</h1>
+   <Routes>
+    <Route path="/" element={<Home/>} />
+   </Routes>
   )
 }
 

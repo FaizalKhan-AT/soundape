@@ -1,0 +1,9 @@
+.post-card {
+  background: var(--black-color) !important;
+  border: 0.5px dashed var(--secondary-text-color) !important;
+  border-radius: 10px;
+  height: 90vh;
+  width: 45vw;
+  margin: 2rem 3rem;
+  margin-right: 0;
+}
