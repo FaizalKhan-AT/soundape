@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const path = require("path");
+const connectDb = require("./db/connect");
 //middlewares
 app.use(compression());
 app.use(express.json());
@@ -12,7 +13,7 @@ app.use(cors());
 
 const startServer = async () => {
   try {
-    // await connectDB(process.env.MONGO_URI);
+    await connectDb(process.env.MONGO_URI);
     app.listen(
       process.env.PORT,
       console.log(`server and database started running at ${process.env.PORT} `)

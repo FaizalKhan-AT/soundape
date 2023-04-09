@@ -6,13 +6,16 @@
   ---text-color: #ffffff;
   --black-color: #000000;
   --secondary-text-color: #737373;
+  --shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 body {
   background-color: var(--bg-color) !important;
   color: var(---text-color) !important;
   user-select: none;
 }
-
+.bg-black {
+  background: var(--black-color);
+}
 .pointer {
   cursor: pointer;
 }
@@ -25,4 +28,10 @@ body {
 }
 .btn:focus {
   border: none !important;
+}
+.form-control {
+  background: var(--bg-color) !important;
+  box-shadow: none !important;
+  border: none !important;
+  color: var(---text-color) !important;
 }
