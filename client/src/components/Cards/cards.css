@@ -1,9 +1,71 @@
 .post-card {
   background: var(--black-color) !important;
   border: 0.5px dashed var(--secondary-text-color) !important;
-  border-radius: 10px;
+  border-radius: 40px !important;
   height: 90vh;
   width: 45vw;
-  margin: 2rem 3rem;
+  margin: 2rem 0;
   margin-right: 0;
+}
+
+.visualizer {
+  background: var(--bg-color);
+  border-radius: 30px;
+  height: 400px;
+  width: 100%;
+}
+
+.bar {
+  width: 10px;
+  height: 120px;
+  background: var(--secondary-text-color);
+  border-radius: 10px;
+  animation: 2s linear infinite pulse;
+}
+.loader.stop > .bar {
+  animation-play-state: paused;
+}
+.bar1 {
+  height: 40px;
+  animation-delay: 0.3s;
+}
+.bar2 {
+  height: 80px;
+  animation-delay: 0.5s;
+}
+.bar4 {
+  height: 80px;
+  animation-delay: 0.5s;
+}
+.bar5 {
+  height: 40px;
+  animation-delay: 0.3s;
+}
+.add-comment {
+  background: transparent;
+  outline: none;
+  font-size: 20px;
+  border: none;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--secondary-text-color);
+}
+@keyframes pulse {
+  0% {
+    height: 1px;
+  }
+  10% {
+    height: 40px;
+  }
+  50% {
+    height: 80px;
+  }
+  60% {
+    height: 120px;
+  }
+  80% {
+    height: 80px;
+  }
+  100% {
+    height: 1px;
+  }
 }

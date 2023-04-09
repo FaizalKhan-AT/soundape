@@ -16,9 +16,13 @@ body {
 .pointer {
   cursor: pointer;
 }
-.material-symbols-rounded.menu-icon.active {
+.material-symbols-rounded.menu-icon.active,
+.material-symbols-rounded.active {
   font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
 }
 .secondary-text {
   color: var(--secondary-text-color);
+}
+.btn:focus {
+  border: none !important;
 }

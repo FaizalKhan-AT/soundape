@@ -52,7 +52,9 @@ const Sidebar: FC = () => {
         {menuItems.map((item, idx) => (
           <li
             key={item.name + idx}
-            className="d-flex menu-item align-items-center gap-3 pointer"
+            className={`${
+              sidebarOpen ? "" : "hover"
+            } d-flex menu-item align-items-center gap-3 pointer`}
           >
             {item.pic ? (
               <img

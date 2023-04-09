@@ -28,8 +28,8 @@
 .menu-profile {
   border-radius: 50%;
 }
-.menu-item:hover,
-.menu-item:active {
+.menu-item.hover:hover,
+.menu-item.hover:active {
   background: var(--bg-color);
 }
 .menu-icon {
