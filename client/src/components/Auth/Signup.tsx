@@ -1,6 +1,8 @@
 import { FC, useState } from "react";
 import { validateEmail, validatePassword } from "./Validate";
 import { Link } from "react-router-dom";
+import Spinner from "../Spinners/Spinner";
+
 interface Props {
   name: string;
   handleSignin: (data: FormData) => void;
@@ -29,13 +31,15 @@ const Signup: FC<Props> = ({ name, handleSignin, loading }) => {
       return "Password must contain atleast 8 characters, must include special character, upper and lowercase characters, numbers to make password strong";
     if (!validateEmail(formData.email))
       return "Entered email address is not valid";
-    return "true";
+    return true;
   };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const err = validateData();
-    setError(err);
-    if (err !== "true") return;
+    if (err !== true) {
+      setError(err);
+      return;
+    }
     handleSignin(formData);
   };
   return (
@@ -125,7 +129,7 @@ const Signup: FC<Props> = ({ name, handleSignin, loading }) => {
             )}
             <div className="w-100 px-3 mb-2">
               <button type="submit" className="w-100 btn btn-primary">
-                Register
+                {loading ? <Spinner /> : "Register"}
               </button>
             </div>
             <span>

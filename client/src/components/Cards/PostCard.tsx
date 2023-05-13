@@ -27,9 +27,7 @@ const PostCard: FC<Props> = ({ data, playerRef, play, setPlay }) => {
 
   return (
     <div className="card post-card px-3 py-3">
-      <audio src={data.audio} ref={playerRef} loop muted={mute}>
-        <source src={data.audio} type="audio/*" />
-      </audio>
+      <audio src={data.audio} ref={playerRef} loop muted={mute}></audio>
       <div className="player-container  d-flex align-items-center gap-4">
         <Eq
           mute={mute}

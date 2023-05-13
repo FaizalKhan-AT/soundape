@@ -1,8 +1,10 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import profile from "../../assets/demo/profile_img.jfif";
 import { Link } from "react-router-dom";
 import { dummyUsers } from "../../dummyData";
+import { UserAuth, UserType } from "../../contexts/AuthContext";
 const SuggestedSidebar: FC = () => {
+  const { logoutUser } = useContext<UserType>(UserAuth);
   return (
     <>
       <div className="card suggested-card px-3 py-4">
@@ -17,13 +19,13 @@ const SuggestedSidebar: FC = () => {
             <span className="displayname">al_techie</span>
             <span className="username">Faizal Khan</span>
           </div>
-          <Link
+          <span
             style={{ fontSize: "14px" }}
-            className="fw-bold text-decoration-none"
-            to="/logout"
+            className="fw-bold text-decoration-none text-primary"
+            onClick={logoutUser}
           >
             Logout
-          </Link>
+          </span>
         </div>
         <br />
         <div className="divider"></div>

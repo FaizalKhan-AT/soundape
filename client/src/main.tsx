@@ -8,11 +8,14 @@ import "@fontsource/roboto/700.css";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import AuthContext from "./contexts/AuthContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <AuthContext>
+        <App />
+      </AuthContext>
     </BrowserRouter>
   </React.StrictMode>
 );

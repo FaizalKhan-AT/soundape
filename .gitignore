@@ -15,7 +15,7 @@ frontend/dist
 dist
 dist-ssr
 *.local
-*/.env
+.env
 /client/src/assets/demo
 # Editor directories and files
 .vscode/*

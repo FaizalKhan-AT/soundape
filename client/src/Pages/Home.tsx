@@ -1,20 +1,21 @@
-import { FC, useRef, useState } from "react";
+import { FC, useRef, useState, useContext } from "react";
 import Sidebar from "../components/Sidebar/Sidebar";
 import PostCard from "../components/Cards/PostCard";
 import SuggestedSidebar from "../components/Sidebar/SuggestedSidebar";
 import { File, dummyAudios } from "../dummyData";
+import { UserAuth, UserType } from "../contexts/AuthContext";
 
 const Home: FC = () => {
-  const [prev, setPrev] = useState<File[]>([]);
+  let currentIdx: number = 0;
+  const { authState } = useContext<UserType>(UserAuth);
   const [next, setNext] = useState<File[]>(dummyAudios);
-  const [nowPlaying, setNowPlaying] = useState<File>(next[0]);
+  const [nowPlaying, setNowPlaying] = useState<File>(next[currentIdx]);
   const playerRef = useRef<HTMLAudioElement>(null);
   const [play, setPlay] = useState<boolean>(true);
-
+  const player = playerRef.current as HTMLAudioElement;
   const handlePrev = () => {};
   const handleNext = () => {
-    playerRef.current?.pause();
-    setPlay(!play);
+    player.src = next[++currentIdx].audio;
   };
   return (
     <>
@@ -36,7 +37,7 @@ const Home: FC = () => {
             arrow_forward_ios
           </span>
         </button>
-        <SuggestedSidebar />
+        {authState.isLoggedIn ? <SuggestedSidebar /> : ""}
       </div>
     </>
   );

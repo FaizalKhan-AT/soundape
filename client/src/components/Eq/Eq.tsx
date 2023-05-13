@@ -27,7 +27,10 @@ const Eq: FC<Props> = ({ mute, handleMute, play, handlePlay }) => {
           onClick={handlePlay}
           className="mute-btn position-absolute start-0 bottom-0 mb-3 ms-4 pointer"
         >
-          <span className="material-symbols-rounded active secondary-text fs-2">
+          <span
+            id="play-btn"
+            className="material-symbols-rounded active secondary-text fs-2"
+          >
             {play ? "play_arrow" : "pause"}
           </span>
         </div>
