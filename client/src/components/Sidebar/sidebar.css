@@ -29,8 +29,9 @@
   border-radius: 50%;
 }
 .menu-item.hover:hover,
+.logout-btn,
 .menu-item.hover:active {
-  background: var(--bg-color);
+  background: var(--bg-color) !important;
 }
 .menu-icon {
   font-weight: 300;

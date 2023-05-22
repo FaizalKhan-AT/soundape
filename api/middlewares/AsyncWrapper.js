@@ -6,7 +6,15 @@ const asyncWrapper = (fn) => {
       await fn(req, res, next);
     } catch (err) {
       if (err.code === 11000) {
-        return next(createCustomError("Email address already Exists", 403));
+        console.log(err);
+        return next(
+          createCustomError(
+            `${
+              err.keyPattern.username ? "Username" : "Email address"
+            } already Exists`,
+            403
+          )
+        );
       }
       next(err);
     }

@@ -21,11 +21,11 @@ export interface UserType {
 // reducer actions
 interface Actions {
   type: actionTypes;
-  payload: string | {};
+  payload: any;
 }
 // reducer state
 interface AuthState {
-  user: User | {};
+  user: User | null;
   isLoggedIn: boolean;
 }
 
@@ -48,7 +48,7 @@ const AuthReducer = (state: AuthState, action: Actions) => {
   }
 };
 const initalState = {
-  user: {},
+  user: null,
   isLoggedIn: false,
 };
 // @create contexts
@@ -65,7 +65,7 @@ const AuthContext: FC<Props> = ({ children }) => {
   const logoutUser = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    authDispatch({ type: actionTypes.LOGOUT, payload: {} });
+    authDispatch({ type: actionTypes.LOGOUT, payload: null });
   };
   // @getuser() - authorizes and gets user details and set user state;
   const getUser = (token: string) => {
@@ -83,7 +83,6 @@ const AuthContext: FC<Props> = ({ children }) => {
             return;
           case "ok":
             authDispatch({ type: actionTypes.SETUSER, payload: data });
-
             return;
         }
       })
@@ -93,8 +92,7 @@ const AuthContext: FC<Props> = ({ children }) => {
   };
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) return;
-    getUser(token);
+    if (token) getUser(token);
   }, []);
   return (
     <UserAuth.Provider value={{ authState, authDispatch, getUser, logoutUser }}>

@@ -40,10 +40,8 @@ const Register: FC = () => {
     <>
       {error ? <Error setError={setError} error={error} /> : ""}
       <BrandNav />
-      <div
-        style={{ height: "100vh" }}
-        className="w-100 d-flex align-items-center justify-content-center"
-      >
+      <br />
+      <div className="w-100 d-flex align-items-center justify-content-center">
         <Signup loading={loading} name="Sign Up" handleSignin={handleSignin} />
       </div>
     </>

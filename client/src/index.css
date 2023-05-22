@@ -35,3 +35,18 @@ body {
   border: none !important;
   color: var(---text-color) !important;
 }
+.form-control.invert {
+  background: var(--black-color) !important;
+}
+.dashed-border {
+  border: 1px dashed var(--secondary-text-color);
+  border-radius: 8px;
+}
+.btn-bg {
+  background-color: var(--black-color) !important;
+  color: var(--text-color) !important;
+}
+.logout-btn {
+  color: var(---text-color) !important;
+  padding: 5px;
+}

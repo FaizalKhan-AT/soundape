@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
-import { validateEmail, validatePassword } from "./Validate";
+import { validateEmail, validatePassword, validateUsername } from "./Validate";
 import { Link } from "react-router-dom";
-import Spinner from "../Spinners/Spinner";
+import LoadingButton from "../Buttons/LoadingButton";
 
 interface Props {
   name: string;
@@ -12,6 +12,7 @@ export interface FormData {
   username: string;
   password: string;
   email: string;
+  displayname: string;
 }
 const Signup: FC<Props> = ({ name, handleSignin, loading }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -20,6 +21,7 @@ const Signup: FC<Props> = ({ name, handleSignin, loading }) => {
     username: "",
     password: "",
     email: "",
+    displayname: "",
   });
 
   const handleChange = (e: React.FormEvent) => {
@@ -31,6 +33,8 @@ const Signup: FC<Props> = ({ name, handleSignin, loading }) => {
       return "Password must contain atleast 8 characters, must include special character, upper and lowercase characters, numbers to make password strong";
     if (!validateEmail(formData.email))
       return "Entered email address is not valid";
+    if (!validateUsername(formData.username))
+      return "Invalid username format. you are allowed to use lowercase alphabets,(.,_) etc";
     return true;
   };
   const handleSubmit = (e: React.FormEvent) => {
@@ -69,6 +73,22 @@ const Signup: FC<Props> = ({ name, handleSignin, loading }) => {
                 required
                 type="text"
                 name="username"
+                className="form-control"
+              />
+            </div>
+            <div className="w-100 px-3">
+              <label className="form-label d-flex align-items-center gap-2">
+                <span className="fs-3 material-symbols-outlined">
+                  account_circle
+                </span>
+                <span className="fs-5">Full name</span>
+              </label>
+              <input
+                onChange={handleChange}
+                value={formData.displayname}
+                required
+                type="text"
+                name="displayname"
                 className="form-control"
               />
             </div>
@@ -128,9 +148,11 @@ const Signup: FC<Props> = ({ name, handleSignin, loading }) => {
               ""
             )}
             <div className="w-100 px-3 mb-2">
-              <button type="submit" className="w-100 btn btn-primary">
-                {loading ? <Spinner /> : "Register"}
-              </button>
+              <LoadingButton
+                style="w-100 btn btn-primary"
+                text="Register"
+                loading={loading}
+              />
             </div>
             <span>
               Already have an account <Link to="/signin">SignIn</Link>

@@ -1,34 +1,45 @@
-import { FC, useState } from "react";
+import { FC, useState, useContext } from "react";
 import "./sidebar.css";
 import profile from "../../assets/demo/profile.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserAuth, UserType } from "../../contexts/AuthContext";
 interface menuType {
   icon: string;
   name: string;
+  to: string;
   pic?: boolean;
 }
 const Sidebar: FC = () => {
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  const handleOpenSidebar = () => setSidebarOpen(!sidebarOpen);
+  const { authState, logoutUser } = useContext<UserType>(UserAuth);
+  const IMAGE_BASE_URI = import.meta.env.VITE_IMAGE_BASE_URL;
+  const { user } = authState;
+  const navigate = useNavigate();
   const menuItems: menuType[] = [
     {
       icon: "home",
       name: "Home",
+      to: "/",
     },
     {
       icon: "search",
       name: "Search",
+      to: "/search",
     },
     {
       icon: "add_circle",
       name: "Create",
+      to: "/create",
     },
+
     {
       icon: profile,
       name: "Profile",
       pic: true,
+      to: "/profile",
     },
   ];
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
-  const handleOpenSidebar = () => setSidebarOpen(!sidebarOpen);
   return (
     <nav
       className={`d-flex flex-column px-2  py-4 sidebar ${
@@ -49,46 +60,61 @@ const Sidebar: FC = () => {
       </div>
       <br />
       <ul className="d-flex flex-column px-2 my-3 gap-4 menu-container">
-        {menuItems.map((item, idx) => (
-          <li
-            key={item.name + idx}
-            className={`${
-              sidebarOpen ? "" : "hover"
-            } d-flex menu-item align-items-center gap-3 pointer`}
-          >
-            {item.pic ? (
-              <img
-                className="menu-profile"
-                src={item.icon}
-                width={30}
-                alt="profile pic"
-              />
-            ) : (
-              <span
-                className={`${
-                  item.name === "Home" ? "active" : ""
-                } material-symbols-rounded menu-icon`}
-              >
-                {item.icon}
+        {menuItems.map((item, idx) => {
+          if (item.name === "Profile" && authState.isLoggedIn === false) return;
+          return (
+            <li
+              key={item.name + idx}
+              onClick={() => navigate(item.to)}
+              className={`${
+                sidebarOpen ? "" : "hover"
+              } d-flex menu-item align-items-center gap-3 pointer`}
+            >
+              {item.pic ? (
+                <img
+                  className="menu-profile"
+                  src={user ? IMAGE_BASE_URI + user.profileImg : ""}
+                  width={30}
+                  alt={user ? user.username : "profile picture"}
+                />
+              ) : (
+                <span
+                  className={`${
+                    item.name === "Home" ? "active" : ""
+                  } material-symbols-rounded menu-icon`}
+                >
+                  {item.icon}
+                </span>
+              )}
+              <span style={{ fontSize: "17px" }} className="mt-1">
+                {item.name}
               </span>
-            )}
-            <span style={{ fontSize: "17px" }} className="mt-1">
-              {item.name}
-            </span>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ul>
       <br />
       <br />
-      <div
-        style={{ fontSize: "14px" }}
-        className={`text-center secondary-text side-text ${
-          sidebarOpen ? "active" : ""
-        }`}
-      >
-        <Link to="/signin">Sign In</Link> to react, create and grow. New here{" "}
-        <Link to="/signup">create an account</Link>
-      </div>
+
+      {authState.isLoggedIn ? (
+        <button
+          onClick={logoutUser}
+          className="btn fw-bold logout-btn d-flex align-items-center gap-2 justify-content-center"
+        >
+          <span className="material-symbols-outlined fs-2">logout</span>
+          {sidebarOpen ? "" : "Logout"}
+        </button>
+      ) : (
+        <div
+          style={{ fontSize: "14px" }}
+          className={`text-center secondary-text side-text ${
+            sidebarOpen ? "active" : ""
+          }`}
+        >
+          <Link to="/signin">Sign In</Link> to react, create and grow. New here{" "}
+          <Link to="/signup">create an account</Link>
+        </div>
+      )}
     </nav>
   );
 };

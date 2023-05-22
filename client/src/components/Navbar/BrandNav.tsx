@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const BrandNav: FC = () => {
   return (
-    <nav className="w-100 align-items-center position-fixed top-0 d-flex justify-content-center">
+    <nav className="w-100 align-items-center position-sticky top-0 d-flex justify-content-center">
       <Link
         to="/"
         className="text-decoration-none my-3 text-light d-flex justify-content-center align-items-center gap-3"

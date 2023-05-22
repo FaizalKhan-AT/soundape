@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import LoadingButton from "../Buttons/LoadingButton";
 interface Props {
   name: string;
   admin?: boolean;
@@ -96,17 +97,11 @@ const Login: React.FC<Props> = ({ name, admin, handleLogin, loading }) => {
               ""
             )}
             <div className="w-100 px-3 my-2">
-              <button type="submit" className="w-100 btn btn-primary">
-                {loading ? (
-                  <span
-                    className="spinner-border spinner-border-sm"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                ) : (
-                  <>Login</>
-                )}
-              </button>
+              <LoadingButton
+                style="w-100 btn btn-primary"
+                text="Login"
+                loading={loading}
+              />
             </div>
             <span>
               Don't have an account <Link to="/signup">Signup</Link>
