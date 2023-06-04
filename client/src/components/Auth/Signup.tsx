@@ -71,6 +71,7 @@ const Signup: FC<Props> = ({ name, handleSignin, loading }) => {
                 onChange={handleChange}
                 value={formData.username}
                 required
+                maxLength={30}
                 type="text"
                 name="username"
                 className="form-control"
@@ -151,6 +152,7 @@ const Signup: FC<Props> = ({ name, handleSignin, loading }) => {
               <LoadingButton
                 style="w-100 btn btn-primary"
                 text="Register"
+                type="submit"
                 loading={loading}
               />
             </div>

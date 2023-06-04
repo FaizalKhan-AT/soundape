@@ -11,7 +11,6 @@
 body {
   background-color: var(--bg-color) !important;
   color: var(---text-color) !important;
-  user-select: none;
 }
 .bg-black {
   background: var(--black-color);

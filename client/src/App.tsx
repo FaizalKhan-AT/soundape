@@ -5,6 +5,8 @@ import SignIn from "./Pages/SignIn";
 import Register from "./Pages/Register";
 import Create from "./Pages/Create";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import Profile from "./Pages/Profile";
+import EditProfile from "./Pages/EditProfile";
 
 const App: FC = () => {
   return (
@@ -21,6 +23,8 @@ const App: FC = () => {
           </ProtectedRoute>
         }
       />
+      <Route path="/:username" element={<Profile />} />
+      <Route path="/edit" element={<EditProfile />} />
     </Routes>
   );
 };

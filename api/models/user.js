@@ -26,6 +26,10 @@ const user = mongoose.Schema({
     type: Number,
     default: 0,
   },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("user", user);

@@ -1,27 +1,32 @@
 import { FC, useContext } from "react";
-import profile from "../../assets/demo/profile_img.jfif";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { dummyUsers } from "../../dummyData";
 import { UserAuth, UserType } from "../../contexts/AuthContext";
 const SuggestedSidebar: FC = () => {
   const { logoutUser, authState } = useContext<UserType>(UserAuth);
   const { user } = authState;
   const IMAGE_BASE_URI = import.meta.env.VITE_IMAGE_BASE_URL;
+  const navigate = useNavigate();
   return (
     <>
       <div className="card suggested-card px-3 py-4">
         {authState.isLoggedIn ? (
           <div className="logged-user d-flex align-items-center gap-4 pointer">
-            <img
-              src={user ? IMAGE_BASE_URI + user?.profileImg : ""}
-              width={60}
-              className="rounded-circle"
-              alt={user ? user.username : "profile picture"}
-            />
-            <div className="d-flex flex-column justify-content-center gap-1">
-              <span className="displayname">{user ? user.username : ""}</span>
-              <span className="username">{user ? user.displayname : ""}</span>
-            </div>
+            <span
+              onClick={() => navigate(`/@${user?.username}`)}
+              className="d-flex align-items-center gap-4 pointer"
+            >
+              <img
+                src={user ? IMAGE_BASE_URI + user?.profileImg : ""}
+                width={60}
+                className="rounded-circle"
+                alt={user ? user.username : "profile picture"}
+              />
+              <div className="d-flex flex-column justify-content-center gap-1">
+                <span className="displayname">{user ? user.username : ""}</span>
+                <span className="username">{user ? user.displayname : ""}</span>
+              </div>
+            </span>
             <span
               style={{ fontSize: "14px" }}
               className="fw-bold text-decoration-none text-primary"

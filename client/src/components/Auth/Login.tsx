@@ -98,6 +98,7 @@ const Login: React.FC<Props> = ({ name, admin, handleLogin, loading }) => {
             )}
             <div className="w-100 px-3 my-2">
               <LoadingButton
+                type="submit"
                 style="w-100 btn btn-primary"
                 text="Login"
                 loading={loading}

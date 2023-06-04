@@ -9,12 +9,15 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AuthContext from "./contexts/AuthContext";
+import EditContext from "./contexts/EditContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthContext>
-        <App />
+        <EditContext>
+          <App />
+        </EditContext>
       </AuthContext>
     </BrowserRouter>
   </React.StrictMode>

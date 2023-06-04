@@ -37,7 +37,7 @@ const Sidebar: FC = () => {
       icon: profile,
       name: "Profile",
       pic: true,
-      to: "/profile",
+      to: "",
     },
   ];
   return (
@@ -65,7 +65,13 @@ const Sidebar: FC = () => {
           return (
             <li
               key={item.name + idx}
-              onClick={() => navigate(item.to)}
+              onClick={() =>
+                navigate(
+                  item.name === "Profile"
+                    ? `/@${authState.user?.username}`
+                    : item.to
+                )
+              }
               className={`${
                 sidebarOpen ? "" : "hover"
               } d-flex menu-item align-items-center gap-3 pointer`}

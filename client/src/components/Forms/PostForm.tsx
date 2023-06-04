@@ -1,7 +1,8 @@
-import { FC, useRef, useState } from "react";
+import { FC, useContext, useRef, useState } from "react";
 import LoadingButton from "../Buttons/LoadingButton";
 import Error from "../Error/Error";
 import { PostType } from "../../Pages/Create";
+import { UserAuth, UserType } from "../../contexts/AuthContext";
 interface Props {
   loading: boolean;
   handleSubmit: (data: PostType) => void;
@@ -11,6 +12,7 @@ const PostForm: FC<Props> = ({ loading, handleSubmit }) => {
   const [title, setTitle] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string>("");
+  const { authState } = useContext(UserAuth) as UserType;
   const handleFileChanged = (e: React.FormEvent) => {
     const target = e.target as HTMLInputElement;
     const [file] = target.files as FileList;
@@ -35,7 +37,10 @@ const PostForm: FC<Props> = ({ loading, handleSubmit }) => {
     e.preventDefault();
     if (!validateData()) return;
     setError("");
-    handleSubmit({ file, title });
+    const userId = authState.user?._id as string;
+    const format = file?.type as string;
+
+    handleSubmit({ file, title, userId, format });
   };
   return (
     <>
