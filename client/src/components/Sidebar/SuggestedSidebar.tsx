@@ -19,12 +19,30 @@ const SuggestedSidebar: FC = () => {
               <img
                 src={user ? IMAGE_BASE_URI + user?.profileImg : ""}
                 width={60}
+                height={60}
+                style={{ objectFit: "cover" }}
                 className="rounded-circle"
                 alt={user ? user.username : "profile picture"}
               />
-              <div className="d-flex flex-column justify-content-center gap-1">
-                <span className="displayname">{user ? user.username : ""}</span>
-                <span className="username">{user ? user.displayname : ""}</span>
+              <div className="d-flex align-items-center gap-2 justify-content-center gap-1">
+                <div className="d-flex justify-content-center flex-column gap-1">
+                  <span className="displayname">
+                    {user ? user.username : ""}
+                  </span>
+                  <span className="username">
+                    {user ? user.displayname : ""}
+                  </span>
+                </div>
+                {user?.verified ? (
+                  <span
+                    title="verified account"
+                    className="pointer material-symbols-outlined text-primary"
+                  >
+                    verified
+                  </span>
+                ) : (
+                  ""
+                )}
               </div>
             </span>
             <span

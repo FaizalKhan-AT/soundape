@@ -1,0 +1,31 @@
+.edit-pro-overlay {
+  width: 100px;
+  height: 100px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.mode-toggle {
+  width: 80px;
+  height: 40px;
+  border-radius: 30px;
+  background: var(--black-color);
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 5px 2px;
+}
+.circle {
+  transition: all 0.3s ease-in-out;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin-left: 4px;
+  border-radius: 50%;
+  background: var(--bg-color);
+}
+.toggle:checked + .circle {
+  background: #3772ff;
+  transform: translateX(37px);
+}

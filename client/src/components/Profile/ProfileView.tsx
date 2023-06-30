@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { User } from "../../interfaces/User";
 import { formatNumber } from "../../utils/formatNumber";
 import NotFound from "../Error/NotFound";
@@ -24,6 +24,8 @@ const ProfileView: FC<Props> = ({
         src={IMAGE_BASE_URI + profile?.profileImg}
         alt={profile?.username}
         width={150}
+        height={150}
+        style={{ objectFit: "cover" }}
       />
       <div className="d-flex flex-column gap-1 text-center">
         <div className="d-flex align-items-center gap-2 h4">
@@ -40,32 +42,40 @@ const ProfileView: FC<Props> = ({
           )}
         </div>
         <h5 className="text-muted">{profile?.displayname}</h5>
+        {profile.mode ? (
+          <i className="secondary-text my-1 fw-bold py-0 my-0">
+            {profile?.mode ? "Creator" : " "}
+          </i>
+        ) : (
+          " "
+        )}
+
+        <pre className="text-justify mb-0 fs-6">
+          {profile.profileDesc ? profile?.profileDesc : ""}
+        </pre>
       </div>
       <div className="my-2 d-flex align-items-center gap-3">
-        <span className="d-flex align-items-center flex-column">
+        <span className="d-flex align-items-center flex-column pointer">
           <span className="fw-bold fs-1">
             {formatNumber(profile?.followingCount as number)}
           </span>
           <span>Following</span>
         </span>
         |
-        <span className="d-flex align-items-center flex-column">
+        <span className="d-flex align-items-center flex-column pointer">
           <span className="fw-bold fs-1">
             {formatNumber(profile?.followerCount as number)}
           </span>
           <span>Followers</span>
         </span>
         |
-        <span className="d-flex align-items-center flex-column">
+        <span className="d-flex align-items-center flex-column pointer">
           <span className="fw-bold fs-1">
             {formatNumber(profile?.postCount as number)}
           </span>
           <span>Posts</span>
         </span>
       </div>
-      <p className="text-justify">
-        {profile.profileDesc ? profile?.profileDesc : ""}
-      </p>
       <button
         style={{ width: "250px" }}
         onClick={isLoggedIn ? handleEdit : handleFollow}

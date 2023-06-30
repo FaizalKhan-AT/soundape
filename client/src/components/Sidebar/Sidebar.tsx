@@ -48,7 +48,7 @@ const Sidebar: FC = () => {
     >
       <div
         onClick={handleOpenSidebar}
-        className="logo d-flex fs-2 align-items-center gap-3 pointer px-2"
+        className="logo d-flex fs-2 align-items-center gap-3 pointer px-2 "
       >
         <span style={{ fontSize: "42px" }} className="material-symbols-rounded">
           graphic_eq
@@ -81,6 +81,8 @@ const Sidebar: FC = () => {
                   className="menu-profile"
                   src={user ? IMAGE_BASE_URI + user.profileImg : ""}
                   width={30}
+                  height={30}
+                  style={{ objectFit: "cover" }}
                   alt={user ? user.username : "profile picture"}
                 />
               ) : (

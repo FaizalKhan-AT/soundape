@@ -1,5 +1,9 @@
 import { FC, useState } from "react";
-import { validateEmail, validatePassword, validateUsername } from "./Validate";
+import {
+  validateEmail,
+  validatePassword,
+  validateUsername,
+} from "../../utils/Validate";
 import { Link } from "react-router-dom";
 import LoadingButton from "../Buttons/LoadingButton";
 
@@ -82,7 +86,7 @@ const Signup: FC<Props> = ({ name, handleSignin, loading }) => {
                 <span className="fs-3 material-symbols-outlined">
                   account_circle
                 </span>
-                <span className="fs-5">Full name</span>
+                <span className="fs-5">Display name</span>
               </label>
               <input
                 onChange={handleChange}

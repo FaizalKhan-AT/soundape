@@ -26,11 +26,11 @@ export const dummyUsers: suggested[] = [
     username: "a1.xdhil_03",
     displayname: "عادل نزار",
   },
-  {
-    pic: neh,
-    username: "im_me_and_u_are_u",
-    displayname: "Kãlõpsïã",
-  },
+  // {
+  //   pic: neh,
+  //   username: "im_me_and_u_are_u",
+  //   displayname: "Kãlõpsïã",
+  // },
   {
     pic: fb,
     username: "scorpionrocksat1485",
