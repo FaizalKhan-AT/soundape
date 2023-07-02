@@ -1,9 +1,11 @@
-import { FC } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { FC, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { User } from "../../interfaces/User";
+import { UserAuth, UserType } from "../../contexts/AuthContext";
 const Profile: FC<{ profile: User | null }> = ({ profile }) => {
   const FILE_BASE_URI = import.meta.env.VITE_FILE_BASE_URL;
   const navigate = useNavigate();
+  const { authState } = useContext(UserAuth) as UserType;
   return (
     <div className="position-absolute top-0 start-0 ms-3 w-100 mt-3 justify-content-between px-3  d-flex align-items-center gap-4 pointer">
       <div
@@ -40,12 +42,16 @@ const Profile: FC<{ profile: User | null }> = ({ profile }) => {
           </span> */}
         </div>
       </div>
-      <span
-        style={{ fontSize: "14px" }}
-        className="fw-bold text-decoration-none me-5 text-primary"
-      >
-        Follow
-      </span>
+      {authState.user?._id === profile?._id ? (
+        " "
+      ) : (
+        <span
+          style={{ fontSize: "14px" }}
+          className="fw-bold text-decoration-none me-5 text-primary"
+        >
+          Follow
+        </span>
+      )}
     </div>
   );
 };

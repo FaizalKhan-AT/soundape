@@ -7,6 +7,7 @@ import axios from "../config";
 import Spinner from "../components/Spinners/Spinner";
 import Error from "../components/Error/Error";
 import { User } from "../interfaces/User";
+import { useParams } from "react-router-dom";
 
 const Home: FC = () => {
   const [count, setCount] = useState<number>(0);
@@ -18,6 +19,7 @@ const Home: FC = () => {
   const [error, setError] = useState<string>("");
   const playerRef = useRef<HTMLAudioElement>(null);
   const [play, setPlay] = useState<boolean>(true);
+  let { id } = useParams();
   const handlePrev = () => {
     setPlay(true);
     setNowPlayingId(ids[count - 1]._id);
@@ -75,8 +77,10 @@ const Home: FC = () => {
       });
   };
   useEffect(() => {
-    fetchPostIds();
-  }, []);
+    if (id !== undefined) {
+      getIndividualPost(id as string);
+    } else fetchPostIds();
+  }, [window.location.href]);
   useEffect(() => {
     getIndividualPost(nowPlayingId);
   }, [nowPlayingId]);
