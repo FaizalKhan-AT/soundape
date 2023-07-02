@@ -4,11 +4,6 @@
   overflow: hidden;
   transition: 0.3s ease-in-out;
   min-height: 100vh;
-  /* position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 20; */
 }
 .sidebar.active {
   width: 70px;
@@ -19,6 +14,7 @@
 .menu-container {
   list-style: none;
 }
+
 .menu-item {
   width: 100%;
   padding: 15px 10px;

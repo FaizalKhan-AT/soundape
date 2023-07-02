@@ -1,17 +1,19 @@
 import { FC } from "react";
 import Profile from "../Profile/Profile";
+import { User } from "../../interfaces/User";
 
 interface Props {
   handleMute: () => void;
   handlePlay: () => void;
   mute: boolean;
   play: boolean;
+  profile: User | null;
 }
-const Eq: FC<Props> = ({ mute, handleMute, play, handlePlay }) => {
+const Eq: FC<Props> = ({ profile, mute, handleMute, play, handlePlay }) => {
   return (
     <>
       <div className="visualizer position-relative d-flex align-items-center justify-content-center">
-        <Profile />
+        <Profile profile={profile} />
         <div
           className={`loader ${
             play ? "stop" : ""

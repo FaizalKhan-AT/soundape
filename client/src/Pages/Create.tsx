@@ -39,7 +39,7 @@ const Create: FC = () => {
             setError(err);
             return;
           case "ok":
-            navigate("/");
+            navigate(`/@${authState.user?.username}`);
             break;
         }
         setLoading(false);

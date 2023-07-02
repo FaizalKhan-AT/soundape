@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { Link } from "react-router-dom";
 
 const NotFound: FC<{ err: string }> = ({ err }) => {
   return (
@@ -12,6 +13,7 @@ const NotFound: FC<{ err: string }> = ({ err }) => {
       <h5 style={{ letterSpacing: "5px", fontSize: "1.5em" }}>
         {err} not found
       </h5>
+      <Link to="/">Go Home</Link>
     </div>
   );
 };

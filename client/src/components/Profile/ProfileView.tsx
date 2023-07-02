@@ -28,8 +28,8 @@ const ProfileView: FC<Props> = ({
         style={{ objectFit: "cover" }}
       />
       <div className="d-flex flex-column gap-1 text-center">
-        <div className="d-flex align-items-center gap-2 h4">
-          {profile?.username}{" "}
+        <div className="d-flex align-items-center justify-content-center gap-2 h4">
+          {profile?.username}
           {profile?.verified ? (
             <span
               title="verified account"

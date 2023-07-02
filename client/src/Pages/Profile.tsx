@@ -17,7 +17,7 @@ const Profile: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   let { username } = useParams();
-  useEffect(() => {
+  const getProfileData = () => {
     const name = username?.includes("@") ? username?.split("@")[1] : username;
     axios
       .get(`user/${name}`)
@@ -37,6 +37,9 @@ const Profile: FC = () => {
         setError(err.response.data.error);
         setLoading(false);
       });
+  };
+  useEffect(() => {
+    getProfileData();
   }, [username]);
   const handleToEdit = () => {
     editDispatch({ type: actionTypes.SETPROFILE, payload: profile });

@@ -1,13 +1,27 @@
 const { createCustomError } = require("../errors/customError");
 const asyncWrapper = require("../middlewares/AsyncWrapper");
-const post = require("../models/post");
+const Post = require("../models/post");
+const User = require("../models/user");
 
 const createPost = asyncWrapper(async (req, res, next) => {
-  const response = await post.create({ ...req.body, audioUrl: req.file.path });
+  const uid = req.body.userId;
+  const response = await Post.create({
+    ...req.body,
+    audioUrl: req.file.filename,
+  });
   if (response) {
-    return res
-      .status(200)
-      .json({ status: "ok", data: "Post created successfully" });
+    const posts = await Post.find({ userId: uid });
+    const creator = await User.findOne({ _id: uid });
+    if (creator && posts.length > 0) {
+      creator.postCount = posts.length;
+      creator.save();
+      return res
+        .status(200)
+        .json({ status: "ok", data: "Post created successfully" });
+    } else
+      return next(
+        createCustomError("something went wrong while posting...", 409)
+      );
   } else
     return next(
       createCustomError("something went wrong while posting...", 409)

@@ -16,6 +16,11 @@ const PostForm: FC<Props> = ({ loading, handleSubmit }) => {
   const handleFileChanged = (e: React.FormEvent) => {
     const target = e.target as HTMLInputElement;
     const [file] = target.files as FileList;
+    if (!file) return;
+    if (file.size > 10000000) {
+      setError("file size should be less than 10 mb");
+      return;
+    }
     setFile(file);
   };
   const validateData = () => {

@@ -9,6 +9,7 @@ const errorHandler = require("./middlewares/errorHandler");
 const Auth = require("./routes/authentication");
 const Post = require("./routes/post");
 const User = require("./routes/user");
+const Guest = require("./routes/guest");
 //middlewares
 app.use(compression());
 app.use(express.json());
@@ -18,8 +19,10 @@ app.use(cors());
 app.use("/api/v1/auth", Auth);
 app.use("/api/v1/posts", Post);
 app.use("/api/v1/user", User);
+app.use("/api/v1/guest", Guest);
 // custom error handler
 app.use(errorHandler);
+// server
 const startServer = async () => {
   try {
     await connectDb(process.env.MONGO_URI);

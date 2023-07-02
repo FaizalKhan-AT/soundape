@@ -1,17 +1,20 @@
 import { FC, useState, useRef } from "react";
 import "./cards.css";
 import Eq from "../Eq/Eq";
-import { File } from "../../dummyData";
+import { Post } from "../../interfaces/Post";
+import { User } from "../../interfaces/User";
 interface Props {
-  data: File;
+  profile: User | null;
+  data: Post | null;
   playerRef: React.RefObject<HTMLAudioElement>;
   play: boolean;
   setPlay: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const PostCard: FC<Props> = ({ data, playerRef, play, setPlay }) => {
+const PostCard: FC<Props> = ({ profile, data, playerRef, play, setPlay }) => {
   const [like, setLike] = useState<boolean>(false);
-  const [likes, setLikes] = useState<number>(20);
   const [mute, setMute] = useState<boolean>(false);
+  const FILE_BASE_URI = import.meta.env.VITE_FILE_BASE_URL;
+
   const handleMute = () => setMute(!mute);
   const handlePlay = () => {
     playerRef.current!.volume = 0.1;
@@ -21,15 +24,20 @@ const PostCard: FC<Props> = ({ data, playerRef, play, setPlay }) => {
   };
 
   const handleLike = () => {
-    if (like === false) setLikes(likes + 1);
     setLike(!like);
   };
 
   return (
     <div className="card post-card px-3 py-3">
-      <audio src={data.audio} ref={playerRef} loop muted={mute}></audio>
+      <audio
+        src={data ? FILE_BASE_URI + data?.audioUrl : ""}
+        ref={playerRef}
+        loop
+        muted={mute}
+      ></audio>
       <div className="player-container  d-flex align-items-center gap-4">
         <Eq
+          profile={profile}
           mute={mute}
           handleMute={handleMute}
           play={play}
@@ -47,7 +55,7 @@ const PostCard: FC<Props> = ({ data, playerRef, play, setPlay }) => {
           >
             favorite
           </span>
-          <span>{likes} Likes</span>
+          <span>{data ? data.likes : 0} Likes</span>
         </div>
         <span className="material-symbols-rounded fs-2 pointer">
           mode_comment
@@ -55,7 +63,10 @@ const PostCard: FC<Props> = ({ data, playerRef, play, setPlay }) => {
         <span className="material-symbols-rounded fs-2 pointer">share</span>
       </div>
       <br />
-      <div className="d-flex mt-5 mx-3 align-items-center justify-content-between">
+      <div className="d-flex mx-3 ms-4 ps-3 ">
+        <pre className="fs-5">{data ? data.title : ""}</pre>
+      </div>
+      <div className="d-flex mx-3 align-items-center justify-content-between">
         <input
           type="text"
           className="mx-3 rounded add-comment py-2 px-3 w-100"

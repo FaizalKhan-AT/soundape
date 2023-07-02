@@ -1,32 +1,51 @@
 import { FC } from "react";
-import profile from "../../assets/demo/profile_img.jfif";
-import { Link } from "react-router-dom";
-const Profile: FC = () => {
+import { Link, useNavigate } from "react-router-dom";
+import { User } from "../../interfaces/User";
+const Profile: FC<{ profile: User | null }> = ({ profile }) => {
+  const FILE_BASE_URI = import.meta.env.VITE_FILE_BASE_URL;
+  const navigate = useNavigate();
   return (
     <div className="position-absolute top-0 start-0 ms-3 w-100 mt-3 justify-content-between px-3  d-flex align-items-center gap-4 pointer">
-      <div className="d-flex align-items-center gap-4">
+      <div
+        onClick={() => navigate(`/@${profile?.username}`)}
+        className="d-flex align-items-center gap-4"
+      >
         <img
-          src={profile}
+          src={profile ? FILE_BASE_URI + profile.profileImg : ""}
           width={50}
+          height={50}
+          style={{ objectFit: "cover" }}
           className="rounded-circle"
           alt="profile-pic"
         />
         <div className="d-flex flex-column justify-content-center gap-1">
-          <span style={{ fontSize: "13px" }} className="displayname">
-            al_techie
+          <span
+            style={{ fontSize: "18px" }}
+            className="displayname d-flex align-items-center gap-2"
+          >
+            {profile ? profile.username : "loading.."}
+            {profile?.verified ? (
+              <span
+                title="verified account"
+                className="pointer material-symbols-outlined text-primary"
+              >
+                verified
+              </span>
+            ) : (
+              ""
+            )}
           </span>
-          <span style={{ fontSize: "13px" }} className="place secondary-text">
+          {/* <span style={{ fontSize: "13px" }} className="place secondary-text">
             Kollam, kerala
-          </span>
+          </span> */}
         </div>
       </div>
-      <Link
+      <span
         style={{ fontSize: "14px" }}
-        className="fw-bold text-decoration-none me-5"
-        to=""
+        className="fw-bold text-decoration-none me-5 text-primary"
       >
         Follow
-      </Link>
+      </span>
     </div>
   );
 };

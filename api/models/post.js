@@ -6,6 +6,7 @@ const post = mongoose.Schema({
   format: { required: true, type: String },
   likes: { required: true, type: Number, default: 0 },
   title: { required: true, type: String },
+  reported: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("post", post);

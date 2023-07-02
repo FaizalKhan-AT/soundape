@@ -17,6 +17,7 @@ dist-ssr
 *.local
 .env
 /client/src/assets/demo
+uploads/
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

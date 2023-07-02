@@ -27,6 +27,11 @@ const EditProfileForm: FC<Props> = ({ loading, handleUpdate, setError }) => {
   const handleFileChange = (e: FormEvent) => {
     const target = e.target as HTMLInputElement;
     const [file] = target.files as FileList;
+    if (!file) return;
+    if (file.size > 2000000) {
+      setError("upload a image with a size below 2 mb");
+      return;
+    }
     setProPic(file);
   };
   const validateData = () => {
@@ -143,14 +148,14 @@ const EditProfileForm: FC<Props> = ({ loading, handleUpdate, setError }) => {
             name="profileDesc"
           ></textarea>
         </div>
-      </div>
-      <div className="col-md-10 my-2 row w-100 justify-content-center">
-        <LoadingButton
-          style="btn btn-primary col-md-3  py-2 fw-bold"
-          loading={loading}
-          text="Save changes"
-          type="submit"
-        />
+        <div className="col-md-10 text-center my-3">
+          <LoadingButton
+            style="btn btn-primary col-md-5 py-2 fw-bold"
+            loading={loading}
+            text="Save changes"
+            type="submit"
+          />
+        </div>
       </div>
     </form>
   );
