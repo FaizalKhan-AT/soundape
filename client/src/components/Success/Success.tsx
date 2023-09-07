@@ -11,9 +11,10 @@ const Success: FC<Props> = ({ success, setSuccess }) => {
       role="alert"
     >
       <button
+        style={{ fontSize: "small", boxShadow: "none" }}
         onClick={() => setSuccess("")}
         type="button"
-        className="btn-close position-absolute end-0 top-0 mt-1 me-2"
+        className="btn-close position-absolute end-0 top-0 my-1 me-2"
         data-bs-dismiss="alert"
         aria-label="Close"
       ></button>

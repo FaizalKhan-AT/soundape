@@ -7,6 +7,11 @@ const post = mongoose.Schema({
   likes: { required: true, type: Number, default: 0 },
   title: { required: true, type: String },
   reported: { type: Boolean, default: false },
+  profile: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("post", post);

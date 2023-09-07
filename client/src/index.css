@@ -12,6 +12,11 @@ body {
   background-color: var(--bg-color) !important;
   color: var(---text-color) !important;
 }
+.btn:disabled {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+}
 .bg-black {
   background: var(--black-color);
 }

@@ -21,15 +21,16 @@ const getPostIds = asyncWrapper(async (req, res, next) => {
 });
 // @get return single post
 const getSinglePost = asyncWrapper(async (req, res, next) => {
-  const post = await Post.findOne({ _id: req.params.id }).lean();
+  const post = await Post.findOne({ _id: req.params.id })
+    .populate({
+      path: "profile",
+      select: "username profileImg _id verified",
+    })
+    .lean();
   if (post) {
-    const creator = await User.findOne({ _id: post.userId }).lean();
-    if (creator)
-      return res
-        .status(200)
-        .json({ status: "ok", data: { post, profile: creator } });
-    else
-      return next(createCustomError("Post exists but user not found :(", 404));
+    let profile = post.profile;
+    delete post.profile;
+    return res.status(200).json({ status: "ok", data: { post, profile } });
   } else return next(createCustomError("No post were found :(", 404));
 });
 
