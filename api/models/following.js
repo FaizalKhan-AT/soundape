@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const like = mongoose.Schema({
-  postId: { required: true, type: String },
+const following = mongoose.Schema({
+  userId: { required: true, type: String },
   profile: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
@@ -9,4 +9,4 @@ const like = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("like", like);
+module.exports = mongoose.model("following", following);

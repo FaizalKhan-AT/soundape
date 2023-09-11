@@ -8,6 +8,7 @@ import axios from "../config";
 import Error from "../components/Error/Error";
 import Spinner from "../components/Spinners/Spinner";
 import { EditData, EditType, actionTypes } from "../contexts/EditContext";
+import followUser from "../utils/followUser";
 
 const Profile: FC = () => {
   const { authState } = useContext(UserAuth) as UserType;
@@ -21,7 +22,7 @@ const Profile: FC = () => {
     const name = username?.includes("@") ? username?.split("@")[1] : username;
     axios
       .get(`user/${name}`)
-      .then((res) => {
+      .then(async (res) => {
         const { status, error: err, data } = res.data;
         switch (status) {
           case "error":
@@ -45,7 +46,14 @@ const Profile: FC = () => {
     editDispatch({ type: actionTypes.SETPROFILE, payload: profile });
     navigate("/edit");
   };
-  const handleFollow = () => {};
+  const handleFollow = async () => {
+    const res = await followUser(
+      profile?._id as string,
+      authState.user?._id as string
+    );
+    const { error, status } = res;
+    if (status === "error") setError(error);
+  };
   return (
     <>
       {error ? <Error setError={setError} error={error} /> : ""}

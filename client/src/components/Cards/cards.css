@@ -2,7 +2,7 @@
   background: var(--black-color) !important;
   border: 0.5px dashed var(--secondary-text-color) !important;
   border-radius: 40px !important;
-  height: 90vh;
+  height: fit-content !important;
   width: 45vw;
   margin: 2rem 0;
   margin-right: 0;

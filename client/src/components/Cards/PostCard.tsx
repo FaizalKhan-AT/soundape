@@ -1,4 +1,4 @@
-import { FC, useState, useRef } from "react";
+import { FC, useState, useContext, useRef } from "react";
 import "./cards.css";
 import Eq from "../Eq/Eq";
 import { Post } from "../../interfaces/Post";
@@ -7,6 +7,10 @@ import Error from "../Error/Error";
 import Success from "../Success/Success";
 import { Comment } from "../../interfaces/Comment";
 import Spinner from "../Spinners/Spinner";
+import axios from "../../config";
+import { UserAuth, UserType } from "../../contexts/AuthContext";
+import Modal from "../Modals/Modal";
+import { handleOpenModal } from "../../utils/modalControls";
 interface Props {
   profile: User | null;
   data: Post | null;
@@ -25,15 +29,19 @@ const PostCard: FC<Props> = ({
   handleComment,
   loading,
 }) => {
-  const [like, setLike] = useState<boolean>(false);
+  const modalRef = useRef<HTMLDialogElement>(null);
+  const [like, setLike] = useState<boolean>(data?.liked ? data.liked : false);
+  const [likes, setLikes] = useState<number>(data?.likes ? data.likes : 0);
   const [mute, setMute] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
   const FILE_BASE_URI = import.meta.env.VITE_FILE_BASE_URL;
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
+  const [title, setTitle] = useState<string>("Comments");
+  const { authState } = useContext(UserAuth) as UserType;
   const handleMute = () => setMute(!mute);
   const handlePlay = () => {
-    playerRef.current!.volume = 0.1;
+    playerRef.current!.volume = 1;
     if (play) playerRef.current?.play();
     else playerRef.current?.pause();
     setPlay(!play);
@@ -43,25 +51,53 @@ const PostCard: FC<Props> = ({
     setComment(target.value);
   };
 
-  const handleLike = () => {
+  const handleLike = (id: string) => {
+    if (!authState.isLoggedIn) {
+      return setError("SignIn to like");
+    }
     setLike(!like);
+    axios
+      .post(`/posts/like/${id}`, {
+        profileId: profile?._id,
+      })
+      .then((res) => {
+        const { status, error: err, data: msg } = res.data;
+        switch (status) {
+          case "error":
+            setError(err);
+            return;
+          case "ok":
+            msg.startsWith("Disliked")
+              ? setLikes(likes - 1)
+              : setLikes(likes + 1);
+
+            break;
+        }
+      })
+      .catch((err) => setError(err.response.data.error));
   };
   const copyURL = async () => {
-    const { host, protocol } = window.location;
+    const { origin } = window.location;
     try {
-      await navigator.clipboard.writeText(
-        `${protocol}//${host}/p/${data?._id}`
-      );
+      await navigator.clipboard.writeText(`${origin}/p/${data?._id}`);
       setSuccess("Url copied");
     } catch (err) {
       setError("Failed to copy ");
     }
   };
+  const openModal = (e: any) => {
+    setTitle(e.target.dataset.name as string);
+    handleOpenModal(modalRef);
+  };
   return (
     <>
+      <Modal id={data?._id as string} title={title} modalRef={modalRef} />
       {error ? <Error error={error} setError={setError} /> : ""}
       {success ? <Success success={success} setSuccess={setSuccess} /> : ""}
-      <div style={{ userSelect: "none" }} className="card post-card px-3 py-3">
+      <div
+        style={{ userSelect: "none" }}
+        className="card post-card px-3 py-3 pb-5 "
+      >
         <audio
           src={data ? FILE_BASE_URI + data?.audioUrl : ""}
           ref={playerRef}
@@ -81,16 +117,22 @@ const PostCard: FC<Props> = ({
         <div className="d-flex mx-3 align-items-center gap-4">
           <div className="d-flex align-items-center gap-3">
             <span
-              onClick={handleLike}
+              onClick={() => handleLike(data?._id as string)}
               className={`${
                 like ? "text-danger active" : ""
               } material-symbols-rounded fs-2 pointer`}
             >
               favorite
             </span>
-            <span>{data ? data.likes : 0} Likes</span>
+            <span className="pointer" data-name="Likes" onClick={openModal}>
+              {likes} Likes
+            </span>
           </div>
-          <span className="material-symbols-rounded fs-2 pointer">
+          <span
+            data-name="Comments"
+            onClick={openModal}
+            className="material-symbols-rounded fs-2 pointer"
+          >
             mode_comment
           </span>
           <span
@@ -109,7 +151,7 @@ const PostCard: FC<Props> = ({
             value={comment}
             onChange={handleChange}
             type="text"
-            className="mx-3 rounded add-comment py-2 px-3 w-100"
+            className="mx-3  add-comment py-2 px-3 w-100"
             placeholder="Add comment"
           />
           {loading ? (

@@ -63,8 +63,13 @@ const Home: FC = () => {
   const getIndividualPost = (id: string) => {
     setNowPlaying(null);
     setProfile(null);
+    const profileId = authState.isLoggedIn ? authState.user?._id : "";
     axios
-      .get(`/guest/post/${id}`)
+      .get(`/guest/post/${id}`, {
+        headers: {
+          "profile-id": profileId,
+        },
+      })
       .then((res) => {
         const { status, error: err, data } = res.data;
         switch (status) {
@@ -86,7 +91,7 @@ const Home: FC = () => {
   const handleAddComment = (data: Comment) => {
     setLoadingComment(true);
     if (!authState.isLoggedIn) {
-      return setError("Signin to add comment");
+      return setError("SignIn to add comment");
     }
     axios
       .post(`/posts/comment/`, {
@@ -128,13 +133,13 @@ const Home: FC = () => {
         {loading ? (
           <div
             style={{ width: "50%" }}
-            className="d-flex flex-column align-items-center justify-content-center"
+            className="d-flex flex-column align-items-center justify-content-center "
           >
             <Spinner size="lg" />
             <span className="my-2">loading..</span>
           </div>
         ) : (ids && ids.length > 0) || nowPlaying ? (
-          <>
+          <div className="d-flex align-items-center me-5">
             <button
               style={{ border: "none !important" }}
               disabled={count === 0 ? true : false}
@@ -165,7 +170,7 @@ const Home: FC = () => {
                 arrow_forward_ios
               </span>
             </button>
-          </>
+          </div>
         ) : nowPlaying === null ? (
           <div
             style={{ width: "50%" }}

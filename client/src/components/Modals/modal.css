@@ -1,0 +1,26 @@
+.modal-container {
+    background: var(--black-color);
+    color: var(--text-color);
+    padding:2.5rem;
+    border:none;
+    border-radius: 15px;
+    width: 50%;
+}
+.modal-container::backdrop {
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
+}
+.line {
+    width: 100%;
+    height: 1px;
+    margin-top: 15px;
+    background-color: #fff;
+}
+/* .comment-card {
+    background: var(--bg-color);
+    border-radius: 15px;
+} */
+.comment-card-container::-webkit-scrollbar-track {
+    width: 10px;
+    background: #000;
+}

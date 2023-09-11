@@ -1,6 +1,5 @@
 import { FC, useState, useContext } from "react";
 import "./sidebar.css";
-import profile from "../../assets/demo/profile.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth, UserType } from "../../contexts/AuthContext";
 interface menuType {
@@ -34,7 +33,7 @@ const Sidebar: FC = () => {
     },
 
     {
-      icon: profile,
+      icon: "",
       name: "Profile",
       pic: true,
       to: "",
@@ -48,7 +47,7 @@ const Sidebar: FC = () => {
     >
       <div
         onClick={handleOpenSidebar}
-        className="logo d-flex fs-2 align-items-center gap-3 pointer px-2 "
+        className="logo d-flex  fs-2 align-items-center gap-3 pointer px-2 "
       >
         <span style={{ fontSize: "42px" }} className="material-symbols-rounded">
           graphic_eq

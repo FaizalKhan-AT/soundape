@@ -89,7 +89,7 @@ const ProfileView: FC<Props> = ({
         ) : (
           <>
             <span className="material-symbols-rounded">person_add</span>
-            Follow
+            {profile.isFollowed ? "Unfollow" : "Follow"}
           </>
         )}
       </button>

@@ -6,4 +6,5 @@ export interface Post {
   likes: number;
   title: string;
   reported: boolean;
+  liked?:boolean;
 }

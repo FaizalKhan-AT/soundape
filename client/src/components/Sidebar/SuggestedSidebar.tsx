@@ -5,6 +5,8 @@ import axios from "../../config";
 import { User } from "../../interfaces/User";
 import Error from "../Error/Error";
 import Spinner from "../Spinners/Spinner";
+import followUser from "../../utils/followUser";
+
 const SuggestedSidebar: FC = () => {
   const { logoutUser, authState } = useContext<UserType>(UserAuth);
   const [error, setError] = useState<string>("");
@@ -34,7 +36,12 @@ const SuggestedSidebar: FC = () => {
         setLoading(false);
       });
   };
-  const handleFollow = () => {};
+
+  const handleFollow = async (id: string, profileId: string) => {
+    const res = await followUser(id, profileId);
+    const { error, status } = res;
+    if (status === "error") setError(error);
+  };
   useEffect(() => {
     fetchSuggestedCreators();
   }, []);
@@ -150,7 +157,10 @@ const SuggestedSidebar: FC = () => {
                     style={{ fontSize: "13px" }}
                     onClick={() =>
                       authState.isLoggedIn
-                        ? handleFollow()
+                        ? handleFollow(
+                            creator._id,
+                            authState.user?._id as string
+                          )
                         : navigate("/signin")
                     }
                     className="fw-bold text-decoration-none text-primary "

@@ -54,3 +54,12 @@ body {
   color: var(---text-color) !important;
   padding: 5px;
 }
+
+::-webkit-scrollbar {
+  width: 0.2rem;
+  background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--secondary-text-color);
+  border-radius: 20px;
+}
