@@ -15,8 +15,10 @@ const Comments: FC<Props> = ({ postId, setError, setSuccess }) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [comment, setComment] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [fetchLoading, setFetchLoading] = useState<boolean>(false);
   const { authState } = useContext<UserType>(UserAuth);
   const fetchComments = async () => {
+    setFetchLoading(true);
     try {
       const res = await axios.get(`/posts/comment`, {
         headers: {
@@ -27,10 +29,12 @@ const Comments: FC<Props> = ({ postId, setError, setSuccess }) => {
       switch (status) {
         case "ok":
           setComments(data);
+          setFetchLoading(false);
           break;
       }
     } catch (err: any) {
       console.error(err.response.data.error);
+      setFetchLoading(false);
     }
   };
   useEffect(() => {
@@ -75,7 +79,11 @@ const Comments: FC<Props> = ({ postId, setError, setSuccess }) => {
         style={{ overflowY: "auto", maxHeight: 386 }}
         className="comment-card-container"
       >
-        {comments && comments.length > 0 ? (
+        {fetchLoading ? (
+          <div className="text-center py-3">
+            <Spinner size="lg" />
+          </div>
+        ) : comments && comments.length > 0 ? (
           comments.map((comment) => {
             return <CommentCard data={comment} key={comment._id} />;
           })

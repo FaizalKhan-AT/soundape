@@ -1,7 +1,11 @@
-import React, { FC } from "react";
+import { FC, useRef, useState, useEffect } from "react";
 import { User } from "../../interfaces/User";
 import { formatNumber } from "../../utils/formatNumber";
+import { getImageBaseURL } from "../../utils/general";
+import { handleCloseModal, handleOpenModal } from "../../utils/modalControls";
 import NotFound from "../Error/NotFound";
+import Modal from "../Modals/Modal";
+import PostModal from "../Modals/PostModal";
 interface Props {
   profile: User;
   isLoggedIn: boolean;
@@ -14,11 +18,28 @@ const ProfileView: FC<Props> = ({
   handleEdit,
   handleFollow,
 }) => {
-  const IMAGE_BASE_URI = import.meta.env.VITE_IMAGE_BASE_URL;
+  const IMAGE_BASE_URI: string = getImageBaseURL();
+  const modalRef = useRef<HTMLDialogElement>(null);
+  const postModalRef = useRef<HTMLDialogElement>(null);
+  const [title, setTitle] = useState<string>("");
 
+  const openModal = (e: any) => {
+    setTitle(e.target.dataset.name as string);
+    handleOpenModal(modalRef);
+  };
+  useEffect(() => {
+    handleCloseModal(postModalRef);
+  }, [window.location.href]);
   if (!profile) return <NotFound err="Profile" />;
+
   return (
     <>
+      <Modal id={profile._id} modalRef={modalRef} title={title} />
+      {profile.mode ? (
+        <PostModal modalRef={postModalRef} id={profile._id} />
+      ) : (
+        ""
+      )}
       <img
         className="rounded-circle"
         src={IMAGE_BASE_URI + profile?.profileImg}
@@ -55,26 +76,43 @@ const ProfileView: FC<Props> = ({
         </pre>
       </div>
       <div className="my-2 d-flex align-items-center gap-3">
-        <span className="d-flex align-items-center flex-column pointer">
-          <span className="fw-bold fs-1">
+        <div className="d-flex align-items-center flex-column pointer">
+          <span
+            data-name="Following"
+            onClick={openModal}
+            className="fw-bold fs-1"
+          >
             {formatNumber(profile?.followingCount as number)}
           </span>
           <span>Following</span>
-        </span>
+        </div>
         |
-        <span className="d-flex align-items-center flex-column pointer">
-          <span className="fw-bold fs-1">
+        <div className="d-flex align-items-center flex-column pointer">
+          <span
+            data-name="Followers"
+            onClick={openModal}
+            className="fw-bold fs-1"
+          >
             {formatNumber(profile?.followerCount as number)}
           </span>
           <span>Followers</span>
-        </span>
-        |
-        <span className="d-flex align-items-center flex-column pointer">
-          <span className="fw-bold fs-1">
-            {formatNumber(profile?.postCount as number)}
-          </span>
-          <span>Posts</span>
-        </span>
+        </div>
+        {profile.mode ? (
+          <>
+            |
+            <div
+              onClick={() => handleOpenModal(postModalRef)}
+              className="d-flex align-items-center flex-column pointer"
+            >
+              <span className="fw-bold fs-1">
+                {formatNumber(profile?.postCount as number)}
+              </span>
+              <span>Posts</span>
+            </div>
+          </>
+        ) : (
+          ""
+        )}
       </div>
       <button
         style={{ width: "250px" }}

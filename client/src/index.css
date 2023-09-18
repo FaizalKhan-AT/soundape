@@ -33,6 +33,9 @@ body {
 .btn:focus {
   border: none !important;
 }
+.btn {
+  box-shadow: none !important;
+}
 .form-control {
   background: var(--bg-color) !important;
   box-shadow: none !important;
@@ -62,4 +65,9 @@ body {
 ::-webkit-scrollbar-thumb {
   background-color: var(--secondary-text-color);
   border-radius: 20px;
+}
+.delete-btn {
+  border-radius: 20px !important;
+  background: rgba(201, 0, 0, .3) !important;
+  padding: 5px 10px;
 }

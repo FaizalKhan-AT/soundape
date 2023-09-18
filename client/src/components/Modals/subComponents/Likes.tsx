@@ -2,43 +2,54 @@ import { FC, useEffect, useState } from "react";
 import axios from "../../../config";
 import { Like } from "../../../interfaces/LIke";
 import LikeCard from "../../Cards/LikeCard";
+import Spinner from "../../Spinners/Spinner";
 interface Props {
-  postId: string;
+  url: string;
 }
-const Likes: FC<Props> = ({ postId }) => {
-  const [likes, setLikes] = useState<Like[]>([]);
-  const fetchLikes = () => {
+const Likes: FC<Props> = ({ url }) => {
+  const [profiles, setProfiles] = useState<Like[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [msg, setMsg] = useState<string>("");
+  const fetchData = () => {
+    setLoading(true);
     axios
-      .get(`/posts/like/${postId}`)
+      .get(url)
       .then((res) => {
-        const { status, error: err, data } = res.data;
+        const { status, data } = res.data;
         switch (status) {
           case "ok":
-            setLikes(data);
+            setProfiles(data);
+            setLoading(false);
             break;
         }
       })
       .catch((err) => {
-        console.error(err.response.data.error);
+        setProfiles([]);
+        setMsg(err.response.data.error);
+        setLoading(false);
       });
   };
   useEffect(() => {
-    fetchLikes();
-  }, []);
+    fetchData();
+  }, [url]);
   return (
     <div>
       <div
         style={{ overflowY: "auto", maxHeight: 386 }}
         className="comment-card-container"
       >
-        {likes && likes.length > 0 ? (
-          likes.map((like) => {
+        {loading ? (
+          <div className="text-center py-3 ">
+            <Spinner size="lg" />
+          </div>
+        ) : profiles && profiles.length > 0 ? (
+          profiles.map((like) => {
             return <LikeCard data={like} key={like._id} />;
           })
         ) : (
           <h4 className="text-center my-2">
             <br />
-            No Likes till now..
+            {msg ? msg : "Nothing till now..."}
           </h4>
         )}
       </div>

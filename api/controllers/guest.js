@@ -15,7 +15,16 @@ const getSuggestedCreators = asyncWrapper(async (req, res, next) => {
 });
 // @get return ids of posts
 const getPostIds = asyncWrapper(async (req, res, next) => {
-  const posts = await Post.find({ reported: false }).select("_id").lean();
+  const userId = req.get("profile-id");
+  const loggedId = req.get("logged-in-id");
+  let opts = {};
+  if (userId) {
+    if (userId === loggedId) {
+      delete opts.reported;
+      opts = { userId };
+    } else opts = { reported: false, userId };
+  } else opts = { reported: false };
+  const posts = await Post.find(opts).select("_id").lean();
   if (posts) {
     return res.status(200).json({ status: "ok", data: posts });
   } else return next(createCustomError("No posts were found :(", 404));

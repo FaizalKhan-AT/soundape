@@ -8,12 +8,20 @@ interface Props {
   mute: boolean;
   play: boolean;
   profile: User | null;
+  postId?: string;
 }
-const Eq: FC<Props> = ({ profile, mute, handleMute, play, handlePlay }) => {
+const Eq: FC<Props> = ({
+  profile,
+  mute,
+  handleMute,
+  play,
+  handlePlay,
+  postId,
+}) => {
   return (
     <>
       <div className="visualizer position-relative d-flex align-items-center justify-content-center">
-        <Profile profile={profile} />
+        <Profile postId={postId} profile={profile} />
         <div
           className={`loader ${
             play ? "stop" : ""

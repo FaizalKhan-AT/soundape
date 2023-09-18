@@ -6,6 +6,9 @@
     border-radius: 15px;
     width: 50%;
 }
+.modal-container.post {
+    background: transparent;
+}
 .modal-container::backdrop {
     background-color: rgba(0,0,0,0.4);
     backdrop-filter: blur(4px);

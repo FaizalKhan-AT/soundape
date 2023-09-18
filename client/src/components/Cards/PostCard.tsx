@@ -38,6 +38,7 @@ const PostCard: FC<Props> = ({
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
   const [title, setTitle] = useState<string>("Comments");
+  const [tipOpen, setTipOpen] = useState<boolean>(false);
   const { authState } = useContext(UserAuth) as UserType;
   const handleMute = () => setMute(!mute);
   const handlePlay = () => {
@@ -58,7 +59,7 @@ const PostCard: FC<Props> = ({
     setLike(!like);
     axios
       .post(`/posts/like/${id}`, {
-        profileId: profile?._id,
+        profileId: authState.user?._id,
       })
       .then((res) => {
         const { status, error: err, data: msg } = res.data;
@@ -68,7 +69,7 @@ const PostCard: FC<Props> = ({
             return;
           case "ok":
             msg.startsWith("Disliked")
-              ? setLikes(likes - 1)
+              ? setLikes(likes > 0 ? likes - 1 : 0)
               : setLikes(likes + 1);
 
             break;
@@ -86,8 +87,12 @@ const PostCard: FC<Props> = ({
     }
   };
   const openModal = (e: any) => {
+    if (tipOpen) handleTipToggle();
     setTitle(e.target.dataset.name as string);
     handleOpenModal(modalRef);
+  };
+  const handleTipToggle = () => {
+    setTipOpen(!tipOpen);
   };
   return (
     <>
@@ -111,36 +116,75 @@ const PostCard: FC<Props> = ({
             handleMute={handleMute}
             play={play}
             handlePlay={handlePlay}
+            postId={data?._id}
           />
         </div>
         <br />
-        <div className="d-flex mx-3 align-items-center gap-4">
-          <div className="d-flex align-items-center gap-3">
+        <div className="d-flex mx-3 align-items-center justify-content-between ">
+          <div className="d-flex aling-items-center gap-4">
+            <div className="d-flex align-items-center gap-3">
+              <span
+                onClick={() => handleLike(data?._id as string)}
+                className={`${
+                  like ? "text-danger active" : ""
+                } material-symbols-rounded fs-2 pointer`}
+              >
+                favorite
+              </span>
+              <span
+                style={{ width: "fit-content" }}
+                className="pointer"
+                data-name="Likes"
+                onClick={openModal}
+              >
+                {likes} Likes
+              </span>
+            </div>
             <span
-              onClick={() => handleLike(data?._id as string)}
-              className={`${
-                like ? "text-danger active" : ""
-              } material-symbols-rounded fs-2 pointer`}
+              data-name="Comments"
+              onClick={openModal}
+              className="material-symbols-rounded fs-2 pointer"
             >
-              favorite
+              mode_comment
             </span>
-            <span className="pointer" data-name="Likes" onClick={openModal}>
-              {likes} Likes
+            <span
+              onClick={copyURL}
+              className="material-symbols-rounded fs-2 pointer"
+            >
+              share
             </span>
           </div>
-          <span
-            data-name="Comments"
-            onClick={openModal}
-            className="material-symbols-rounded fs-2 pointer"
-          >
-            mode_comment
-          </span>
-          <span
-            onClick={copyURL}
-            className="material-symbols-rounded fs-2 pointer"
-          >
-            share
-          </span>
+          {data?.reported && profile?._id === authState.user?._id ? (
+            <div className="reported-flag d-flex align-items-center text-danger gap-2">
+              <span className="material-symbols-outlined fs-3">report</span>
+              <span className="fw-bold">Reported</span>
+            </div>
+          ) : (
+            ""
+          )}
+          {data?.reported ? (
+            ""
+          ) : (
+            <div className="position-relative">
+              <span
+                onClick={handleTipToggle}
+                className="material-symbols-outlined fs-2 pointer "
+              >
+                more_vert
+              </span>
+              {tipOpen ? (
+                <div
+                  data-name="Report"
+                  onClick={openModal}
+                  className="position-absolute bg-dark p-3 rounded pointer fs-6"
+                >
+                  Report
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+          )}
         </div>
         <br />
         <div className="d-flex mx-3 ms-4 ps-3 ">

@@ -93,9 +93,38 @@ const isFollowedByUser = asyncWrapper(async (req, res, next) => {
     return res.status(200).json({ status: "ok", data: { isFollowed: true } });
   } else return next(createCustomError("User not followed...", 404));
 });
+const getFollowers = asyncWrapper(async (req, res, next) => {
+  const userId = req.params.id;
+  const followers = await Follower.find({ userId }).populate({
+    path: "profile",
+    select: "_id username verified profileImg displayname",
+  });
+  if (followers.length > 0) {
+    return res.status(200).json({ status: "ok", data: followers });
+  } else return next(createCustomError("No followers till now...", 404));
+});
+const getFollowing = asyncWrapper(async (req, res, next) => {
+  const userId = req.params.id;
+  const following = await Following.find({ userId }).populate({
+    path: "profile",
+    select: "_id username verified profileImg displayname",
+  });
+  if (following.length > 0) {
+    return res.status(200).json({ status: "ok", data: following });
+  } else return next(createCustomError("No following till now...", 404));
+});
+const getUsers = asyncWrapper(async (req, res, next) => {
+  const users = await User.find({});
+  if (users.length > 0) {
+    return res.status(200).json({ status: "ok", data: users });
+  } else return next(createCustomError("No users were found..", 404));
+});
 module.exports = {
   getProfile,
   updateProfile,
   followUser,
   isFollowedByUser,
+  getFollowers,
+  getFollowing,
+  getUsers,
 };

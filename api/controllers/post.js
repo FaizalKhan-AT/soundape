@@ -4,6 +4,7 @@ const Post = require("../models/post");
 const User = require("../models/user");
 const Comment = require("../models/comment");
 const Like = require("../models/like");
+const Report = require("../models/report");
 const createPost = asyncWrapper(async (req, res, next) => {
   const uid = req.body.userId;
   const response = await Post.create({
@@ -56,12 +57,11 @@ const getAllComments = asyncWrapper(async (req, res, next) => {
 const likeAPost = asyncWrapper(async (req, res, next) => {
   const { id } = req.params;
   const { profileId } = req.body;
-  const isLiked = await Like.findOne({ profile: profileId });
-  const likes = await Like.find({ postId: id });
+  const isLiked = await Like.findOne({ profile: profileId, postId: id });
   const post = await Post.findOne({ _id: id });
   if (isLiked) {
     await Like.findOneAndDelete({ _id: isLiked._id });
-    post.likes = likes.length - 1;
+    post.likes--;
     post.save();
     return res
       .status(200)
@@ -72,7 +72,7 @@ const likeAPost = asyncWrapper(async (req, res, next) => {
       profile: profileId,
     });
     if (newLike) {
-      post.likes = likes.length + 1;
+      post.likes++;
       post.save();
       return res
         .status(200)
@@ -89,11 +89,56 @@ const getPostLikes = asyncWrapper(async (req, res, next) => {
     return res.status(200).json({ status: "ok", data: likes });
   else return next(createCustomError("No likes till now..", 404));
 });
+const reportPost = asyncWrapper(async (req, res, next) => {
+  const postId = req.params.id;
+  const post = await Report.findOne({ postId });
+  if (post) {
+    post.count++;
+    post.save();
+    return res
+      .status(200)
+      .json({ status: "ok", data: "Reported post successfully..." });
+  } else {
+    const reported = await Report.create({ postId });
+    if (reported)
+      return res
+        .status(200)
+        .json({ status: "ok", data: "Reported post successfully..." });
+    else return next(createCustomError("Failed to report the post..", 404));
+  }
+});
+const handleFileDelete = (fp) => {
+  let filename = path.join(__dirname, "..", fp);
+  let tempFile = fs.openSync(filename, "r");
 
+  fs.closeSync(tempFile);
+
+  fs.unlinkSync(filename);
+};
+const deletePost = asyncWrapper(async (req, res, next) => {
+  const postId = req.get("post-id");
+  const uid = req.get("user-id");
+  const delPost = await Post.findOneAndDelete({ _id: postId });
+  const user = await User.findOne({ _id: uid });
+  if (delPost && user) {
+    user.postCount--;
+    user.save();
+    handleFileDelete(delPost.audioUrl);
+    const op = [Like, Comment, Report];
+    for (let i = 0; i < op.length; i++) {
+      await op[i].findOneAndDelete({ postId });
+    }
+    return res
+      .status(200)
+      .json({ status: "ok", data: "Post deleted successfully.." });
+  } else return next(createCustomError("Couldn't delete the post..", 409));
+});
 module.exports = {
   createPost,
   commentPost,
   getAllComments,
   likeAPost,
   getPostLikes,
+  reportPost,
+  deletePost,
 };
