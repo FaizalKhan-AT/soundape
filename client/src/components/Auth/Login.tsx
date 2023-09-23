@@ -104,9 +104,13 @@ const Login: React.FC<Props> = ({ name, admin, handleLogin, loading }) => {
                 loading={loading}
               />
             </div>
-            <span>
-              Don't have an account <Link to="/signup">Signup</Link>
-            </span>
+            {admin ? (
+              <br />
+            ) : (
+              <span>
+                Don't have an account <Link to="/signup">Signup</Link>
+              </span>
+            )}
           </div>
         </form>
       </div>

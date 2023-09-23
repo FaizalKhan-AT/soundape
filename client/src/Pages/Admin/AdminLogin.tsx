@@ -1,22 +1,21 @@
 import { FC, useState, useContext } from "react";
-import Error from "../components/Error/Error";
 import { useNavigate } from "react-router-dom";
-import Login, { FormData } from "../components/Auth/Login";
-import BrandNav from "../components/Navbar/BrandNav";
-import axios from "../config";
-import { User } from "../interfaces/User";
-import { UserAuth, UserType } from "../contexts/AuthContext";
-import { saveToLS } from "../utils/general";
-const SignIn: FC = () => {
+import Login from "../../components/Auth/Login";
+import Error from "../../components/Error/Error";
+import BrandNav from "../../components/Navbar/BrandNav";
+import axios from "../../config";
+import { UserAuth, UserType } from "../../contexts/AuthContext";
+import { saveToLS } from "../../utils/general";
+
+const AdminLogin: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
-  const { getUser } = useContext<UserType>(UserAuth);
-
-  const handleLogin = (data: FormData) => {
+  const { getAdmin } = useContext<UserType>(UserAuth);
+  const handleLogin = (data: { email: string; password: string }) => {
     setLoading(true);
     axios
-      .post("auth/login", {
+      .post("auth/admin/login", {
         Headers: {
           "Content-type": "application/json",
         },
@@ -29,9 +28,9 @@ const SignIn: FC = () => {
             setError(err);
             return;
           case "ok":
-            saveToLS(data);
-            getUser(data.token);
-            navigate("/");
+            saveToLS(data, "a");
+            getAdmin(data.token);
+            navigate("/admin");
             break;
         }
         setLoading(false);
@@ -48,10 +47,14 @@ const SignIn: FC = () => {
       <br />
       <br />
       <div className="w-100 d-flex align-items-center justify-content-center">
-        <Login loading={loading} name="Sign In" handleLogin={handleLogin} />
+        <Login
+          admin
+          loading={loading}
+          name="Admin Login"
+          handleLogin={handleLogin}
+        />
       </div>
     </>
   );
 };
-
-export default SignIn;
+export default AdminLogin;

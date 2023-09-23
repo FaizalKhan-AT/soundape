@@ -10,6 +10,7 @@ const Auth = require("./routes/authentication");
 const Post = require("./routes/post");
 const User = require("./routes/user");
 const Guest = require("./routes/guest");
+const Admin = require("./routes/admin");
 //middlewares
 app.use(compression());
 app.use(express.json());
@@ -20,6 +21,7 @@ app.use("/api/v1/auth", Auth);
 app.use("/api/v1/posts", Post);
 app.use("/api/v1/user", User);
 app.use("/api/v1/guest", Guest);
+app.use("/api/v1/admin", Admin);
 // custom error handler
 app.use(errorHandler);
 // server

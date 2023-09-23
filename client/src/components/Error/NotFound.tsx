@@ -1,7 +1,10 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
 
-const NotFound: FC<{ err: string }> = ({ err }) => {
+const NotFound: FC<Partial<{ err: string; admin: boolean }>> = ({
+  err,
+  admin,
+}) => {
   return (
     <div
       style={{ height: "100%" }}
@@ -13,7 +16,7 @@ const NotFound: FC<{ err: string }> = ({ err }) => {
       <h5 style={{ letterSpacing: "5px", fontSize: "1.5em" }}>
         {err} not found
       </h5>
-      <Link to="/">Go Home</Link>
+      {admin ? "" : <Link to="/">Go Home</Link>}
     </div>
   );
 };

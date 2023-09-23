@@ -8,6 +8,8 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Profile from "./Pages/Profile";
 import EditProfile from "./Pages/EditProfile";
 import NotFound from "./components/Error/NotFound";
+import Dashboard from "./Pages/Admin/Dashboard";
+import AdminLogin from "./Pages/Admin/AdminLogin";
 
 const App: FC = () => {
   return (
@@ -27,6 +29,17 @@ const App: FC = () => {
       />
       <Route path="/:username" element={<Profile />} />
       <Route path="/edit" element={<EditProfile />} />
+      <Route path="/admin">
+        <Route
+          index
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="login" element={<AdminLogin />} />
+      </Route>
       <Route path="*" element={<NotFound err="Requested page" />} />
     </Routes>
   );

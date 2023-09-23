@@ -46,7 +46,7 @@ const Home: FC = () => {
         switch (status) {
           case "error":
             setError(err);
-            return;
+            break;
           case "ok":
             setIds(data);
             setNowPlayingId(data[count]._id);

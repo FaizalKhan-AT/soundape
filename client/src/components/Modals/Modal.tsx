@@ -6,7 +6,7 @@ import Comments from "./subComponents/Comments";
 import Likes from "./subComponents/Likes";
 import Search from "./subComponents/Search";
 import YesOrNo from "./subComponents/YesOrNo";
-interface Props {
+export interface Props {
   modalRef: React.RefObject<HTMLDialogElement>;
   title: string;
   id: string;
