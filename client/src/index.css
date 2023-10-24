@@ -33,7 +33,11 @@ body {
 .btn:focus {
   border: none !important;
 }
-.btn {
+.form-select {
+  border: none !important;
+}
+.btn,
+.form-select {
   box-shadow: none !important;
 }
 .form-control {
@@ -68,6 +72,6 @@ body {
 }
 .delete-btn {
   border-radius: 20px !important;
-  background: rgba(201, 0, 0, .3) !important;
+  background: rgba(201, 0, 0, 0.3) !important;
   padding: 5px 10px;
 }

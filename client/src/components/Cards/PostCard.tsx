@@ -190,7 +190,7 @@ const PostCard: FC<Props> = ({
         <div className="d-flex mx-3 ms-4 ps-3 ">
           <pre className="fs-5">{data ? data.title : ""}</pre>
         </div>
-        <div className="d-flex mx-3 align-items-center justify-content-between">
+        {/* <div className="d-flex mx-3 align-items-center justify-content-between">
           <input
             value={comment}
             onChange={handleChange}
@@ -219,7 +219,7 @@ const PostCard: FC<Props> = ({
               </span>
             </button>
           )}
-        </div>
+        </div> -- removed */}
       </div>
     </>
   );

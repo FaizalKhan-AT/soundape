@@ -1,7 +1,7 @@
-const { getMetrics } = require("../controllers/admin");
+const { getFilteredData } = require("../controllers/admin");
 
 const Router = require("express").Router();
 
-Router.route("/").get(getMetrics);
+Router.route("/:filter").get(getFilteredData);
 
 module.exports = Router;

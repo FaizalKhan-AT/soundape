@@ -11,37 +11,25 @@ const docCount = async (model, query) => {
     return 0;
   }
 };
-
-const getMetrics = asyncWrapper(async (req, res, next) => {
-  const dashboard = [
-    {
-      name: "Registered Users",
-      icon: "group",
-      count: await docCount(User, {}),
-    },
-    {
-      name: "Creators",
-      icon: "person",
-      count: await docCount(User, { mode: true }),
-    },
-    {
-      name: "Posts",
-      icon: "apps",
-      count: await docCount(Post, { reported: false }),
-    },
-    {
-      name: "Reported Posts",
-      icon: "report",
-      count: await docCount(Post, { reported: true }),
-    },
-    {
-      name: "Pending posts to report",
-      icon: "pending_actions",
-      count: await docCount(Report, {}),
-    },
-  ];
-  if (dashboard.length > 0) {
-    return res.status(200).json({ status: "ok", data: dashboard });
+const FilterData = async (filter) => {
+  switch (filter) {
+    case "registered-users":
+      return await User.find({});
+    case "creators":
+      return await User.find({ mode: true });
+    case "pending-reports":
+      return await Report.find({});
+    case "reported-posts":
+      return await Post.find({ reported: true });
+    default:
+      return [];
+  }
+};
+const getFilteredData = asyncWrapper(async (req, res, next) => {
+  const { filter } = req.params;
+  const filteredData = await FilterData(filter);
+  if (filteredData.length > 0) {
+    return res.status(200).json({ status: "ok", data: filteredData });
   } else return next(createCustomError("Not found :(", 404));
 });
-module.exports = { getMetrics };
+module.exports = { getFilteredData };

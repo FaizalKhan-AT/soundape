@@ -49,10 +49,14 @@
   color: var(--text-color);
   border-bottom: 1px solid var(--secondary-text-color);
 }
-.reported-flag {
+.reported-flag,
+.pending-flag {
   border-radius: 20px !important;
-  background: rgba(201, 0, 0, .3) !important;
+  background: rgba(201, 0, 0, 0.3) !important;
   padding: 5px 10px;
+}
+.pending-flag {
+  background: rgba(201, 151, 0, 0.3) !important;
 }
 @keyframes pulse {
   0% {

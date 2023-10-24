@@ -24,6 +24,9 @@ const Modal: FC<Props> = ({ modalRef, title, id }) => {
     REPORT: <YesOrNo op="report" id={id} modalRef={modalRef} />,
     SEARCH: <Search />,
     DELETE: <YesOrNo op="delete" id={id} modalRef={modalRef} />,
+    VERIFY: <YesOrNo op="verify" id={id} modalRef={modalRef} />,
+    REVOKE: <YesOrNo op="revoke" id={id} modalRef={modalRef} />,
+    REFUTE: <YesOrNo op="refute" id={id} modalRef={modalRef} />,
   };
   useEffect(() => {
     modalRef.current?.close();
@@ -36,7 +39,9 @@ const Modal: FC<Props> = ({ modalRef, title, id }) => {
       {error ? <Error error={error} setError={setError} /> : ""}
       <dialog className="modal-container" ref={modalRef}>
         <div className="d-flex align-items-center justify-content-between">
-          <h3 className="mb-0">{title}</h3>
+          <h3 style={{ textTransform: "capitalize" }} className="mb-0">
+            {title}
+          </h3>
           <span
             title="Close"
             className="material-symbols-outlined pointer fs-2"

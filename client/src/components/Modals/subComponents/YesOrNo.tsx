@@ -45,14 +45,16 @@ const YesOrNo: FC<Props> = ({ op, id, modalRef }) => {
     <>
       {error ? <Error setError={setError} error={error} /> : ""}
       <br />
-      <h3 className="text-center my-2">Are you sure to {op} this ?</h3>
+      <h3 className="text-center my-2">
+        Are you sure to {op} this {op === "verify" && "user"} ?
+      </h3>
       <div className="d-flex mt-5 align-items-center justify-content-center gap-3">
-        <button className="btn btn-lg btn-primary px-4" onClick={handleClick}>
+        <button className="btn  btn-primary px-4" onClick={handleClick}>
           {loading ? <Spinner /> : "Yes"}
         </button>
         <button
           onClick={() => handleCloseModal(modalRef)}
-          className="btn btn-lg btn-secondary px-4"
+          className="btn  btn-secondary px-4"
         >
           Cancel
         </button>

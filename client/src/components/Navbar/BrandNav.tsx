@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 
 const BrandNav: FC<Partial<{ admin: boolean }>> = ({ admin }) => {
   return (
-    <nav className="w-100 align-items-center position-sticky top-0 d-flex justify-content-center">
+    <nav
+      style={{ zIndex: 21 }}
+      className="w-100 align-items-center d-flex justify-content-center"
+    >
       <Link
         to={admin ? "/admin" : "/"}
         className="text-decoration-none my-3 text-light d-flex justify-content-center align-items-center gap-3"
