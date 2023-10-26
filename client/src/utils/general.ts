@@ -25,6 +25,46 @@ export const deletePost = async (id: string, uid: string) => {
     return { status: "error", error: err.response.data.error };
   }
 };
+export const deleteUser = async (id: string) => {
+  try {
+    let { data } = await axios.delete(`/admin/delete-user/${id}`);
+    return data;
+  } catch (err: any) {
+    return { status: "error", error: err.response.data.error };
+  }
+};
+export const verifyUser = async (id: string) => {
+  try {
+    let { data } = await axios.patch(`/admin/verify/${id}`);
+    return data;
+  } catch (err: any) {
+    return { status: "error", error: err.response.data.error };
+  }
+};
+export const refuteUser = async (id: string) => {
+  try {
+    let { data } = await axios.patch(`/admin/refute/${id}`);
+    return data;
+  } catch (err: any) {
+    return { status: "error", error: err.response.data.error };
+  }
+};
+export const reportPostAdmin = async (id: string) => {
+  try {
+    let { data } = await axios.patch(`/admin/report-post/${id}`);
+    return data;
+  } catch (err: any) {
+    return { status: "error", error: err.response.data.error };
+  }
+};
+export const revokeReportedPost = async (id: string) => {
+  try {
+    let { data } = await axios.patch(`/admin/revoke-post/${id}`);
+    return data;
+  } catch (err: any) {
+    return { status: "error", error: err.response.data.error };
+  }
+};
 export const saveToLS = (data: User, n: string = "") => {
   localStorage.setItem(`${n}token`, data.token as string);
   localStorage.setItem(`${n}user`, JSON.stringify(data));

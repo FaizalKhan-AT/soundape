@@ -32,7 +32,12 @@ const AdminPostCard: FC<Props> = ({ item, openModal }) => {
             <span className="fw-bold">Reported</span>
           </div>
         )}
-        <button className="btn btn-sm btn-danger">
+        <button
+          className="btn btn-sm btn-danger"
+          data-name={item.postId ? "report post" : "revoke post"}
+          data-id={item.postId ? item.postId : item._id}
+          onClick={openModal}
+        >
           {item.postId ? "Report" : "Revoke"}
         </button>
       </div>

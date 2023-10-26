@@ -99,10 +99,13 @@ const SuggestedSidebar: FC = () => {
         <br />
         <div className="divider"></div>
         <br />
-        <div className="w-100 suggested-users d-flex flex-column gap-3">
+        <div
+          style={{ height: 270, overflowY: "scroll" }}
+          className="w-100 suggested-users d-flex flex-column gap-3"
+        >
           <div className="w-100 d-flex align-items-center justify-content-between">
             <span className="secondary-text fw-bold">Suggested for you</span>
-            <span className="fw-bold pointer">see all</span>
+            {/* <span className="fw-bold pointer">see all</span> */}
           </div>
           {loading ? (
             <div className="d-flex justify-content-center my-4">
@@ -153,7 +156,7 @@ const SuggestedSidebar: FC = () => {
                       ""
                     )}
                   </div>
-                  <span
+                  {/* <span
                     style={{ fontSize: "13px" }}
                     onClick={() =>
                       authState.isLoggedIn
@@ -166,6 +169,13 @@ const SuggestedSidebar: FC = () => {
                     className="fw-bold text-decoration-none text-primary "
                   >
                     Follow
+                  </span> */}
+                  <span
+                    style={{ fontSize: "13px" }}
+                    className="fw-bold text-decoration-none text-primary"
+                    onClick={() => navigate(`/@${creator.username}`)}
+                  >
+                    More
                   </span>
                 </div>
               );

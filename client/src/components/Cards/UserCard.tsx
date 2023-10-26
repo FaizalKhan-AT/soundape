@@ -20,13 +20,15 @@ const UserCard: FC<Props> = ({ item, openModal }) => {
           className="btn btn-sm btn-primary"
           data-name={item.verified ? "refute" : "verify"}
           onClick={openModal}
+          data-id={item._id}
         >
           {item.verified ? "Refute" : "Verify"}
         </button>
         <button
           className="btn btn-sm btn-danger"
-          data-name="delete"
+          data-name="delete user"
           onClick={openModal}
+          data-id={item._id}
         >
           Delete
         </button>

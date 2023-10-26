@@ -6,11 +6,11 @@ const type: string[] = [
   "Reported Posts",
 ];
 interface Props {
-  handleSearch: (query: string) => void;
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
   handleFilter: (filter: string) => void;
 }
-const FilterNav: React.FC<Props> = ({ handleSearch, handleFilter }) => {
-  const [search, setSearch] = useState<string>("");
+const FilterNav: React.FC<Props> = ({ search, setSearch, handleFilter }) => {
   const [filter, setFilter] = useState<string>(type[0]);
   const handleChange = (e: React.FormEvent) => {
     const target = e.target as HTMLSelectElement;
@@ -53,12 +53,12 @@ const FilterNav: React.FC<Props> = ({ handleSearch, handleFilter }) => {
             }}
             className="form-control invert"
           />
-          <span
+          {/* <span
             onClick={() => handleSearch(search)}
             className="btn btn-rounded btn-bg d-flex align-items-center justify-content-center"
           >
             <span className="material-symbols-outlined search">search</span>
-          </span>
+          </span> */}
         </div>
       </nav>
     </>

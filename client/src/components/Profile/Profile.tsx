@@ -5,6 +5,7 @@ import { UserAuth, UserType } from "../../contexts/AuthContext";
 import { getImageBaseURL } from "../../utils/general";
 import Modal from "../Modals/Modal";
 import { handleOpenModal } from "../../utils/modalControls";
+import followUser from "../../utils/followUser";
 const Profile: FC<{ profile: User | null; postId?: string }> = ({
   profile,
   postId,
@@ -13,6 +14,11 @@ const Profile: FC<{ profile: User | null; postId?: string }> = ({
   const navigate = useNavigate();
   const { authState } = useContext(UserAuth) as UserType;
   const modalRef = useRef<HTMLDialogElement>(null);
+  const handleFollow = async (id: string, profileId: string) => {
+    const res = await followUser(id, profileId);
+    const { error, status } = res;
+    if (status === "error") console.error(error);
+  };
   return (
     <>
       {postId ? <Modal title="Delete" id={postId} modalRef={modalRef} /> : ""}
@@ -68,6 +74,14 @@ const Profile: FC<{ profile: User | null; postId?: string }> = ({
         ) : (
           <span
             style={{ fontSize: "14px" }}
+            onClick={() =>
+              authState.isLoggedIn
+                ? handleFollow(
+                    profile?._id as string,
+                    authState.user?._id as string
+                  )
+                : navigate("/signin")
+            }
             className="fw-bold text-decoration-none me-5 text-primary"
           >
             Follow

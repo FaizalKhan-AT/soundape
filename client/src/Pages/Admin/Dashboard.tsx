@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useRef } from "react";
+import { FC, useEffect, useState, useRef, useMemo } from "react";
 import Error from "../../components/Error/Error";
 import Modal from "../../components/Modals/Modal";
 import BrandNav from "../../components/Navbar/BrandNav";
@@ -18,6 +18,9 @@ const Dashboard: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [filterName, setFilterName] = useState<string>("");
+  const [id, setId] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
+
   function fetchData(filter: string) {
     setFilterName(filter.toLocaleUpperCase().split("-")[1]);
     setLoading(true);
@@ -47,30 +50,45 @@ const Dashboard: FC = () => {
   const modalRef = useRef<HTMLDialogElement>(null);
   const openModal = (e: any) => {
     setTitle(e.target.dataset.name as string);
+    setId(e.target.dataset.id as string);
+
     handleOpenModal(modalRef);
   };
-  const handleSearching = (query: string) => {};
 
+  let searchItems = useMemo(() => {
+    return data.filter((d) => {
+      if (d.username && d.username.toLowerCase().includes(search)) return d;
+      else return d;
+    });
+  }, [data, search]);
   return (
     <>
       {error ? <Error setError={setError} error={error} /> : ""}
-      <Modal id={"" as string} title={title} modalRef={modalRef} />
+      <Modal id={id} title={title} modalRef={modalRef} />
       <BrandNav admin />
       <br />
-      <FilterNav handleFilter={fetchData} handleSearch={handleSearching} />
+      <FilterNav
+        handleFilter={fetchData}
+        search={search}
+        setSearch={setSearch}
+      />
       <br />
       <div className="container">
         {loading ? (
-          <Spinner />
-        ) : data && data.length > 0 ? (
-          data.map((item) => (
-            <ItemCard
-              filter={filterName}
-              key={item._id}
-              item={item}
-              openModal={openModal}
-            />
-          ))
+          <div className="my-2 text-center">
+            <Spinner size="lg" />
+          </div>
+        ) : searchItems && searchItems.length > 0 ? (
+          searchItems.map((item) => {
+            return (
+              <ItemCard
+                filter={filterName}
+                key={item._id}
+                item={item}
+                openModal={openModal}
+              />
+            );
+          })
         ) : (
           <NotFoundCard />
         )}

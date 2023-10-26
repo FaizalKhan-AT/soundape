@@ -11,6 +11,7 @@ const docCount = async (model, query) => {
     return 0;
   }
 };
+
 const FilterData = async (filter) => {
   switch (filter) {
     case "registered-users":
@@ -25,6 +26,7 @@ const FilterData = async (filter) => {
       return [];
   }
 };
+
 const getFilteredData = asyncWrapper(async (req, res, next) => {
   const { filter } = req.params;
   const filteredData = await FilterData(filter);
@@ -32,4 +34,63 @@ const getFilteredData = asyncWrapper(async (req, res, next) => {
     return res.status(200).json({ status: "ok", data: filteredData });
   } else return next(createCustomError("Not found :(", 404));
 });
-module.exports = { getFilteredData };
+
+const verifyUser = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const user = await User.findOne({ _id: id });
+  if (user) {
+    user.verified = true;
+    user.save();
+    return res.status(200).json({ status: "ok", data: "user verified.." });
+  } else return next(createCustomError("User not found :(", 404));
+});
+
+const refuteUser = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const user = await User.findOne({ _id: id });
+  if (user) {
+    user.verified = false;
+    user.save();
+    return res.status(200).json({ status: "ok", data: "user refuted.." });
+  } else return next(createCustomError("User not found :(", 404));
+});
+const reportPost = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const post = await Post.findOne({ _id: id });
+  if (post) {
+    post.reported = true;
+    post.save();
+    await Report.findOneAndDelete({ postId: id });
+    return res.status(200).json({ status: "ok", data: "post reported.." });
+  } else return next(createCustomError("Post not found :(", 404));
+});
+const revokeReportedPost = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const post = await Post.findOne({ _id: id });
+  if (post) {
+    post.reported = false;
+    post.save();
+    return res.status(200).json({ status: "ok", data: "post reported.." });
+  } else return next(createCustomError("Post not found :(", 404));
+});
+const deleteUser = asyncWrapper(async (req, res, next) => {
+  const { id } = req.params;
+  const user = await User.findOneAndDelete({ _id: id });
+  if (user) {
+    const posts = await Post.deleteMany({ userId: id });
+    if (posts)
+      return res
+        .status(200)
+        .json({ status: "ok", data: "user and posts deleted.." });
+    else return next(createCustomError("Posts weren't found", 404));
+  } else return next(createCustomError("User not found :(", 404));
+});
+
+module.exports = {
+  getFilteredData,
+  verifyUser,
+  refuteUser,
+  deleteUser,
+  reportPost,
+  revokeReportedPost,
+};

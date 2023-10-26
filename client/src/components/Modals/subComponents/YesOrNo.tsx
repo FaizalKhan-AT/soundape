@@ -1,6 +1,14 @@
 import { FC, useState, useContext } from "react";
 import { UserAuth, UserType } from "../../../contexts/AuthContext";
-import { deletePost, reportPost } from "../../../utils/general";
+import {
+  deletePost,
+  deleteUser,
+  refuteUser,
+  reportPost,
+  reportPostAdmin,
+  revokeReportedPost,
+  verifyUser,
+} from "../../../utils/general";
 import { handleCloseModal } from "../../../utils/modalControls";
 import Error from "../../Error/Error";
 import Spinner from "../../Spinners/Spinner";
@@ -34,10 +42,25 @@ const YesOrNo: FC<Props> = ({ op, id, modalRef }) => {
       case "report":
         handleSuccessAndError(await reportPost(id));
         break;
+      case "report post":
+        handleSuccessAndError(await reportPostAdmin(id));
+        break;
+      case "revoke post":
+        handleSuccessAndError(await revokeReportedPost(id));
+        break;
       case "delete":
         handleSuccessAndError(
           await deletePost(id, authState.user?._id as string)
         );
+        break;
+      case "delete user":
+        handleSuccessAndError(await deleteUser(id));
+        break;
+      case "refute":
+        handleSuccessAndError(await refuteUser(id));
+        break;
+      case "verify":
+        handleSuccessAndError(await verifyUser(id));
         break;
     }
   }
@@ -46,7 +69,8 @@ const YesOrNo: FC<Props> = ({ op, id, modalRef }) => {
       {error ? <Error setError={setError} error={error} /> : ""}
       <br />
       <h3 className="text-center my-2">
-        Are you sure to {op} this {op === "verify" && "user"} ?
+        Are you sure to {op.split(" ")[0]} this {op === "verify" && "user"}
+        {op === "refute" && "user"} ?
       </h3>
       <div className="d-flex mt-5 align-items-center justify-content-center gap-3">
         <button className="btn  btn-primary px-4" onClick={handleClick}>

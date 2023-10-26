@@ -22,17 +22,20 @@ const Modal: FC<Props> = ({ modalRef, title, id }) => {
     FOLLOWING: <Likes url={`/user/following/${id}`} key={id} />,
     FOLLOWERS: <Likes url={`/user/followers/${id}`} key={id} />,
     REPORT: <YesOrNo op="report" id={id} modalRef={modalRef} />,
+    REPORTPOST: <YesOrNo op="report post" id={id} modalRef={modalRef} />,
     SEARCH: <Search />,
     DELETE: <YesOrNo op="delete" id={id} modalRef={modalRef} />,
+    DELETEUSER: <YesOrNo op="delete user" id={id} modalRef={modalRef} />,
     VERIFY: <YesOrNo op="verify" id={id} modalRef={modalRef} />,
-    REVOKE: <YesOrNo op="revoke" id={id} modalRef={modalRef} />,
+    REVOKEPOST: <YesOrNo op="revoke post" id={id} modalRef={modalRef} />,
     REFUTE: <YesOrNo op="refute" id={id} modalRef={modalRef} />,
   };
   useEffect(() => {
     modalRef.current?.close();
   }, [window.location.href]);
   type T = keyof typeof subComponents;
-  const DesiredComponent = subComponents[title.toLocaleUpperCase() as T];
+  const DesiredComponent =
+    subComponents[title.toLocaleUpperCase().replace(" ", "") as T];
 
   return (
     <>
