@@ -11,5 +11,4 @@ export interface User {
   followingCount?: number;
   profileDesc?: string;
   verified?: boolean;
-  isFollowed?: boolean;
 }

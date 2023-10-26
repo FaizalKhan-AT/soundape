@@ -1,4 +1,4 @@
-import { FC, useContext, useRef } from "react";
+import { FC, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../interfaces/User";
 import { UserAuth, UserType } from "../../contexts/AuthContext";
@@ -6,6 +6,7 @@ import { getImageBaseURL } from "../../utils/general";
 import Modal from "../Modals/Modal";
 import { handleOpenModal } from "../../utils/modalControls";
 import followUser from "../../utils/followUser";
+import axios_instance from "../../config";
 const Profile: FC<{ profile: User | null; postId?: string }> = ({
   profile,
   postId,
@@ -14,11 +15,31 @@ const Profile: FC<{ profile: User | null; postId?: string }> = ({
   const navigate = useNavigate();
   const { authState } = useContext(UserAuth) as UserType;
   const modalRef = useRef<HTMLDialogElement>(null);
+  const [isFollowed, setIsFollowed] = useState<boolean>(false);
   const handleFollow = async (id: string, profileId: string) => {
     const res = await followUser(id, profileId);
     const { error, status } = res;
     if (status === "error") console.error(error);
+    else if (status === "ok") {
+      checkIsFollowed(profile?._id as string);
+    }
   };
+  function checkIsFollowed(profileId: string) {
+    axios_instance
+      .get("/user/is-followed", {
+        headers: {
+          "user-id": authState.user?._id as string,
+          "profile-id": profileId,
+        },
+      })
+      .then((res: any) => {
+        setIsFollowed(res.data.data.followed);
+      })
+      .catch((err) => setIsFollowed(false));
+  }
+  useEffect(() => {
+    checkIsFollowed(profile?._id as string);
+  }, []);
   return (
     <>
       {postId ? <Modal title="Delete" id={postId} modalRef={modalRef} /> : ""}
@@ -82,9 +103,11 @@ const Profile: FC<{ profile: User | null; postId?: string }> = ({
                   )
                 : navigate("/signin")
             }
-            className="fw-bold text-decoration-none me-5 text-primary"
+            className={`fw-bold text-decoration-none me-5 ${
+              isFollowed ? "text-secondary" : "text-primary"
+            }`}
           >
-            Follow
+            {isFollowed ? "Unfollow" : "Follow"}
           </span>
         )}
       </div>

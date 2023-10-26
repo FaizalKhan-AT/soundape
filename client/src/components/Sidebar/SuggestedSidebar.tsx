@@ -100,10 +100,10 @@ const SuggestedSidebar: FC = () => {
         <div className="divider"></div>
         <br />
         <div
-          style={{ height: 270, overflowY: "scroll" }}
-          className="w-100 suggested-users d-flex flex-column gap-3"
+          style={{ height: 260, overflowY: "scroll" }}
+          className="w-100 pe-3 suggested-users d-flex flex-column gap-3"
         >
-          <div className="w-100 d-flex align-items-center justify-content-between">
+          <div className="w-100  d-flex align-items-center justify-content-between">
             <span className="secondary-text fw-bold">Suggested for you</span>
             {/* <span className="fw-bold pointer">see all</span> */}
           </div>

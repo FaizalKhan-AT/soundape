@@ -30,13 +30,13 @@ const LikeCard: FC<Props> = ({ data }) => {
           <span className="fs-5 text-muted">{profile?.displayname}</span>
         </div>
       </div>
-      {authState.user?._id === profile?._id ? (
+      {/* {authState.user?._id === profile?._id ? (
         ""
       ) : (
         <button className="btn btn-sm btn-primary d-flex align-items-center justify-content-end gap-2">
           Follow
         </button>
-      )}
+      )} */}
     </div>
   );
 };

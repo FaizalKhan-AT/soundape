@@ -22,7 +22,7 @@ const Profile: FC = () => {
     const name = username?.includes("@") ? username?.split("@")[1] : username;
     axios
       .get(`user/${name}`)
-      .then(async (res) => {
+      .then(async (res: any) => {
         const { status, error: err, data } = res.data;
         switch (status) {
           case "error":
@@ -39,9 +39,11 @@ const Profile: FC = () => {
         setLoading(false);
       });
   };
+
   useEffect(() => {
     getProfileData();
   }, [username]);
+
   const handleToEdit = () => {
     editDispatch({ type: actionTypes.SETPROFILE, payload: profile });
     navigate("/edit");
@@ -53,6 +55,9 @@ const Profile: FC = () => {
     );
     const { error, status } = res;
     if (status === "error") setError(error);
+    else if (status === "ok") {
+      getProfileData();
+    }
   };
   return (
     <>

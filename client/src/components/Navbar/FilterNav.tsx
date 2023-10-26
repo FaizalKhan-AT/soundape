@@ -43,16 +43,20 @@ const FilterNav: React.FC<Props> = ({ search, setSearch, handleFilter }) => {
           </div>
         </div>
         <div className="d-flex align-items-center gap-2">
-          <input
-            type="search"
-            placeholder="Search"
-            value={search}
-            onChange={(e: React.FormEvent) => {
-              const target = e.target as HTMLInputElement;
-              setSearch(target.value);
-            }}
-            className="form-control invert"
-          />
+          {filter === "pending-reports" || filter === "reported-posts" ? (
+            ""
+          ) : (
+            <input
+              type="search"
+              placeholder="Search"
+              value={search}
+              onChange={(e: React.FormEvent) => {
+                const target = e.target as HTMLInputElement;
+                setSearch(target.value);
+              }}
+              className="form-control invert"
+            />
+          )}
           {/* <span
             onClick={() => handleSearch(search)}
             className="btn btn-rounded btn-bg d-flex align-items-center justify-content-center"

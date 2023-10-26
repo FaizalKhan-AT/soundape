@@ -58,7 +58,6 @@ const Dashboard: FC = () => {
   let searchItems = useMemo(() => {
     return data.filter((d) => {
       if (d.username && d.username.toLowerCase().includes(search)) return d;
-      else return d;
     });
   }, [data, search]);
   return (

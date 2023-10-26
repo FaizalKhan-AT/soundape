@@ -1,4 +1,4 @@
-import { FC, useRef, useState, useEffect } from "react";
+import { FC, useRef, useState, useEffect, useContext } from "react";
 import { User } from "../../interfaces/User";
 import { formatNumber } from "../../utils/formatNumber";
 import { getImageBaseURL } from "../../utils/general";
@@ -6,6 +6,8 @@ import { handleCloseModal, handleOpenModal } from "../../utils/modalControls";
 import NotFound from "../Error/NotFound";
 import Modal from "../Modals/Modal";
 import PostModal from "../Modals/PostModal";
+import axios_instance from "../../config";
+import { UserAuth, UserType } from "../../contexts/AuthContext";
 interface Props {
   profile: User;
   isLoggedIn: boolean;
@@ -22,14 +24,33 @@ const ProfileView: FC<Props> = ({
   const modalRef = useRef<HTMLDialogElement>(null);
   const postModalRef = useRef<HTMLDialogElement>(null);
   const [title, setTitle] = useState<string>("");
-
+  const [isFollowed, setIsFollowed] = useState<boolean>(false);
+  const { authState } = useContext<UserType>(UserAuth);
   const openModal = (e: any) => {
     setTitle(e.target.dataset.name as string);
     handleOpenModal(modalRef);
   };
+  const checkIsFollowed = (profileId: string) => {
+    axios_instance
+      .get("/user/is-followed", {
+        headers: {
+          "user-id": authState.user?._id as string,
+          "profile-id": profileId,
+        },
+      })
+      .then((res: any) => {
+        setIsFollowed(res.data.data.followed);
+      })
+      .catch((err) => setIsFollowed(false));
+  };
   useEffect(() => {
     handleCloseModal(postModalRef);
   }, [window.location.href]);
+  useEffect(() => {
+    checkIsFollowed(profile?._id);
+  }, [profile]);
+  console.log(isFollowed);
+
   if (!profile) return <NotFound err="Profile" />;
 
   return (
@@ -117,7 +138,9 @@ const ProfileView: FC<Props> = ({
       <button
         style={{ width: "250px" }}
         onClick={isLoggedIn ? handleEdit : handleFollow}
-        className="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+        className={`btn ${
+          isFollowed && !isLoggedIn ? "btn-bg" : "btn-primary"
+        } d-flex align-items-center justify-content-center gap-2`}
       >
         {isLoggedIn ? (
           <>
@@ -126,8 +149,10 @@ const ProfileView: FC<Props> = ({
           </>
         ) : (
           <>
-            <span className="material-symbols-rounded">person_add</span>
-            {profile.isFollowed ? "Unfollow" : "Follow"}
+            <span className="material-symbols-rounded">
+              {isFollowed ? "person_remove" : "person_add"}
+            </span>
+            {isFollowed ? "Unfollow" : "Follow"}
           </>
         )}
       </button>

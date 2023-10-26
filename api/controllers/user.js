@@ -88,9 +88,12 @@ const followUser = asyncWrapper(async (req, res, next) => {
 const isFollowedByUser = asyncWrapper(async (req, res, next) => {
   const userId = req.get("user-id");
   const profile = req.get("profile-id");
-  const isFollowed = await Follower.findOne({ userId, profile });
-  if (isFollowed) {
-    return res.status(200).json({ status: "ok", data: { isFollowed: true } });
+  const user = await Following.findOne({
+    userId: userId,
+    profile: profile,
+  });
+  if (user) {
+    return res.status(200).json({ status: "ok", data: { followed: true } });
   } else return next(createCustomError("User not followed...", 404));
 });
 const getFollowers = asyncWrapper(async (req, res, next) => {
