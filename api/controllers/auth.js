@@ -106,6 +106,31 @@ const adminLogin = asyncWrapper(async (req, res, next) => {
   }
   return next(createCustomError("Invalid email / password", 400));
 });
+const checkEmail = asyncWrapper(async (req, res, next) => {
+  const email = req.get("email");
+  const person = await user.findOne({ email }).lean();
+  if (!person) return next(createCustomError("user not found", 404));
+
+  return res.status(200).json({
+    status: "ok",
+    data: "valid email address",
+  });
+});
+const changePassword = asyncWrapper(async (req, res, next) => {
+  const { email, password } = req.body;
+  const hashPassword = await bcrypt.hash(password, 10);
+
+  const person = await user.findOneAndUpdate(
+    { email },
+    { password: hashPassword }
+  );
+  if (person)
+    return res.status(200).json({
+      status: "ok",
+      data: "Password successfully changed.",
+    });
+  else return next(createCustomError("Password change unsuccessfull", 404));
+});
 module.exports = {
   register,
   login,
@@ -113,4 +138,6 @@ module.exports = {
   createAdmin,
   adminLogin,
   getAdmin,
+  checkEmail,
+  changePassword,
 };

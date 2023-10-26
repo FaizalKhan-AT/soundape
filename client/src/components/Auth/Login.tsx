@@ -96,6 +96,7 @@ const Login: React.FC<Props> = ({ name, admin, handleLogin, loading }) => {
             ) : (
               ""
             )}
+
             <div className="w-100 px-3 my-2">
               <LoadingButton
                 type="submit"
@@ -107,9 +108,14 @@ const Login: React.FC<Props> = ({ name, admin, handleLogin, loading }) => {
             {admin ? (
               <br />
             ) : (
-              <span>
-                Don't have an account <Link to="/signup">Signup</Link>
-              </span>
+              <>
+                <span>
+                  Don't have an account <Link to="/signup">Signup</Link>
+                </span>
+                <Link style={{ fontSize: "14px" }} to="/forgot-password">
+                  Forgot password ?
+                </Link>
+              </>
             )}
           </div>
         </form>
