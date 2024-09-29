@@ -1,9 +1,9 @@
 import axios from "../config";
 import { User } from "../interfaces/User";
 
-export const getImageBaseURL = (): string => {
-  return import.meta.env.VITE_IMAGE_BASE_URL;
-};
+export const getImageBaseURL = (): string =>
+  import.meta.env.VITE_IMAGE_BASE_URL;
+
 export const reportPost = async (id: string) => {
   try {
     let { data } = await axios.post(`/posts/report/${id}`);
